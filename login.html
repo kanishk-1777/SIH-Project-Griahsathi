@@ -1,0 +1,1338 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Login | Griahsathi</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="output.css" />
+
+
+  <style>
+
+    :root {
+
+      --bg:#08120f;
+      --surface:#101d18;
+      --surface-2:#15251e;
+      --text:#f0f7f2;
+      --muted:#a6b8ad;
+      --line:rgba(255,255,255,.11);
+      --green:#65d99a;
+      --green-deep:#2d9d62;
+      --shadow:0 24px 60px rgba(0,0,0,.32);
+
+    }
+
+
+    [data-theme="light"] {
+
+      --bg:#f5faf6;
+      --surface:#fff;
+      --surface-2:#eef8f1;
+      --text:#14241b;
+      --muted:#607268;
+      --line:rgba(20,36,27,.13);
+      --green:#16814b;
+      --green-deep:#126a3e;
+      --shadow:0 24px 60px rgba(14,56,31,.12);
+
+    }
+
+
+    * {
+      box-sizing:border-box;
+    }
+
+
+    html {
+      scroll-behavior:smooth;
+    }
+
+
+    body {
+
+      margin:0;
+      min-width:320px;
+      font-family:"DM Sans",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+
+    }
+
+
+    a {
+
+      color:inherit;
+      text-decoration:none;
+
+    }
+
+
+    .page {
+
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+
+      background:
+        radial-gradient(
+          circle at 15% 15%,
+          rgba(61,187,112,.16),
+          transparent 28rem
+        ),
+
+        radial-gradient(
+          circle at 85% 70%,
+          rgba(59,156,100,.10),
+          transparent 26rem
+        ),
+
+        var(--bg);
+
+    }
+
+
+    .wrap {
+
+      width:min(
+        1120px,
+        calc(100% - 40px)
+      );
+
+      margin:auto;
+
+    }
+
+
+    header {
+
+      border-bottom:1px solid var(--line);
+
+      background:
+        color-mix(
+          in srgb,
+          var(--bg) 84%,
+          transparent
+        );
+
+      backdrop-filter:blur(14px);
+
+    }
+
+
+    .nav {
+
+      min-height:76px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      gap:20px;
+
+    }
+
+
+    .brand {
+
+      font-family:Pacifico,cursive;
+
+      font-size:1.5rem;
+
+      color:var(--green);
+
+      white-space:nowrap;
+
+    }
+
+
+    .navlinks {
+
+      display:flex;
+      align-items:center;
+
+      gap:7px;
+
+    }
+
+
+    .navlinks a,
+    .theme {
+
+      border:1px solid transparent;
+
+      border-radius:10px;
+
+      color:var(--muted);
+
+      font:600 .88rem inherit;
+
+      padding:10px 12px;
+
+      background:transparent;
+
+      cursor:pointer;
+
+      transition:.2s;
+
+    }
+
+
+    .navlinks a:hover,
+    .theme:hover {
+
+      color:var(--text);
+
+      background:var(--surface-2);
+
+      border-color:var(--line);
+
+    }
+
+
+    .navlinks .active {
+
+      color:var(--text);
+
+      border-color:
+        rgba(101,217,154,.4);
+
+      background:
+        rgba(101,217,154,.09);
+
+    }
+
+
+    main {
+
+      flex:1;
+
+      display:grid;
+
+      place-items:center;
+
+      padding:58px 0;
+
+    }
+
+
+    .auth-grid {
+
+      width:min(940px,100%);
+
+      display:grid;
+
+      grid-template-columns:
+        1.05fr .95fr;
+
+      align-items:stretch;
+
+      border:1px solid var(--line);
+
+      border-radius:24px;
+
+      overflow:hidden;
+
+      background:var(--surface);
+
+      box-shadow:var(--shadow);
+
+    }
+
+
+    .welcome {
+
+      padding:58px 54px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(28,125,73,.9),
+          rgba(10,43,28,.96)
+        );
+
+      color:#fff;
+
+      position:relative;
+
+      overflow:hidden;
+
+    }
+
+
+    .welcome:after {
+
+      content:"";
+
+      position:absolute;
+
+      width:300px;
+      height:300px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.14);
+
+      border-radius:50%;
+
+      bottom:-180px;
+      right:-130px;
+
+    }
+
+
+    .eyebrow {
+
+      color:#baf7d3;
+
+      text-transform:uppercase;
+
+      letter-spacing:.14em;
+
+      font-size:.75rem;
+
+      font-weight:700;
+
+    }
+
+
+    h1 {
+
+      font-size:
+        clamp(2rem,4vw,3rem);
+
+      margin:15px 0;
+
+      line-height:1.12;
+
+    }
+
+
+    .welcome p {
+
+      max-width:365px;
+
+      line-height:1.7;
+
+      color:
+        rgba(255,255,255,.8);
+
+    }
+
+
+    .perks {
+
+      list-style:none;
+
+      padding:25px 0 0;
+
+      margin:0;
+
+      display:grid;
+
+      gap:14px;
+
+    }
+
+
+    .perks li:before {
+
+      content:"✓";
+
+      display:inline-grid;
+
+      place-items:center;
+
+      width:22px;
+      height:22px;
+
+      margin-right:10px;
+
+      border-radius:50%;
+
+      background:
+        rgba(255,255,255,.14);
+
+      color:#d3ffe4;
+
+      font-weight:700;
+
+    }
+
+
+    .form-side {
+
+      padding:50px 48px;
+
+    }
+
+
+    h2 {
+
+      font-size:1.8rem;
+
+      margin:0 0 8px;
+
+    }
+
+
+    .sub {
+
+      margin:0 0 27px;
+
+      color:var(--muted);
+
+      line-height:1.55;
+
+    }
+
+
+    form {
+
+      display:grid;
+
+      gap:17px;
+
+    }
+
+
+    label {
+
+      display:grid;
+
+      gap:8px;
+
+      font-size:.88rem;
+
+      font-weight:700;
+
+    }
+
+
+    input {
+
+      width:100%;
+
+      border:1px solid var(--line);
+
+      border-radius:11px;
+
+      background:var(--surface-2);
+
+      color:var(--text);
+
+      font:inherit;
+
+      padding:13px 14px;
+
+      outline:0;
+
+      transition:.2s;
+
+    }
+
+
+    input::placeholder {
+
+      color:var(--muted);
+
+      opacity:.72;
+
+    }
+
+
+    input:focus {
+
+      border-color:var(--green);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(101,217,154,.16);
+
+    }
+
+
+    .row {
+
+      display:flex;
+
+      justify-content:space-between;
+
+      align-items:center;
+
+      gap:12px;
+
+      font-size:.85rem;
+
+    }
+
+
+    .remember {
+
+      display:flex;
+
+      align-items:center;
+
+      gap:7px;
+
+      color:var(--muted);
+
+      font-weight:500;
+
+      cursor:pointer;
+
+    }
+
+
+    .remember input {
+
+      width:16px;
+      height:16px;
+
+      accent-color:
+        var(--green-deep);
+
+    }
+
+
+    .forgot {
+
+      color:var(--green);
+
+      font-weight:700;
+
+    }
+
+
+    .button {
+
+      width:100%;
+
+      border:0;
+
+      border-radius:11px;
+
+      padding:14px;
+
+      color:#062414;
+
+      background:var(--green);
+
+      font:700 .95rem inherit;
+
+      cursor:pointer;
+
+      transition:
+        transform .2s,
+        filter .2s;
+
+    }
+
+
+    .button:hover {
+
+      filter:brightness(1.05);
+
+      transform:translateY(-1px);
+
+    }
+
+
+    .message {
+
+      display:none;
+
+      padding:11px 12px;
+
+      border-radius:9px;
+
+      font-size:.88rem;
+
+      line-height:1.4;
+
+    }
+
+
+    .message.error {
+
+      display:block;
+
+      color:#ffb6ad;
+
+      background:
+        rgba(210,69,54,.13);
+
+      border:
+        1px solid
+        rgba(210,69,54,.32);
+
+    }
+
+
+    .message.success {
+
+      display:block;
+
+      color:#b9f4ce;
+
+      background:
+        rgba(48,174,96,.13);
+
+      border:
+        1px solid
+        rgba(48,174,96,.32);
+
+    }
+
+
+    .switch {
+
+      margin:23px 0 0;
+
+      text-align:center;
+
+      color:var(--muted);
+
+      font-size:.9rem;
+
+    }
+
+
+    .switch a {
+
+      color:var(--green);
+
+      font-weight:700;
+
+    }
+
+
+    footer {
+
+      border-top:1px solid var(--line);
+
+      color:var(--muted);
+
+      font-size:.84rem;
+
+    }
+
+
+    .footer-inner {
+
+      padding:21px 0;
+
+      display:flex;
+
+      justify-content:space-between;
+
+      gap:18px;
+
+    }
+
+
+    .footer-links {
+
+      display:flex;
+
+      gap:18px;
+
+    }
+
+
+    .footer-links a:hover {
+
+      color:var(--green);
+
+    }
+
+
+    @media(max-width:760px) {
+
+      .wrap {
+
+        width:min(
+          100% - 28px,
+          560px
+        );
+
+      }
+
+
+      .navlinks a:not(.active) {
+
+        display:none;
+
+      }
+
+
+      .nav {
+
+        min-height:67px;
+
+      }
+
+
+      main {
+
+        padding:30px 0;
+
+      }
+
+
+      .auth-grid {
+
+        grid-template-columns:1fr;
+
+        border-radius:18px;
+
+      }
+
+
+      .welcome {
+
+        padding:35px 28px;
+
+      }
+
+
+      .welcome h1 {
+
+        font-size:2rem;
+
+      }
+
+
+      .perks {
+
+        display:none;
+
+      }
+
+
+      .form-side {
+
+        padding:33px 28px;
+
+      }
+
+
+      .footer-inner {
+
+        align-items:center;
+
+        flex-direction:column;
+
+        text-align:center;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+<header>
+
+<nav
+  class="wrap nav"
+  aria-label="Main navigation"
+>
+
+  <a
+    class="brand"
+    href="index.html"
+  >
+    Griahsathi
+  </a>
+
+
+  <div class="navlinks">
+
+    <a href="index.html">
+      Home
+    </a>
+
+    <a href="services.html">
+      Services
+    </a>
+
+    <a href="find-worker.html">
+      Find a Worker
+    </a>
+
+    <a
+      class="active"
+      href="login.html"
+    >
+      Login
+    </a>
+
+    <button
+      class="theme"
+      id="themeToggle"
+      type="button"
+      aria-label="Toggle light and dark mode"
+    >
+      ☼
+    </button>
+
+  </div>
+
+</nav>
+
+</header>
+
+
+<main class="wrap">
+
+
+<section
+  class="auth-grid"
+  aria-labelledby="login-title"
+>
+
+
+<aside class="welcome">
+
+  <div class="eyebrow">
+    Welcome back
+  </div>
+
+  <h1>
+    Home services, made simple.
+  </h1>
+
+  <p>
+    Log in to book trusted Griah Sathis
+    and keep every service request in
+    one place.
+  </p>
+
+  <ul class="perks">
+
+    <li>
+      Book skilled local professionals
+    </li>
+
+    <li>
+      Manage your service requests
+    </li>
+
+    <li>
+      Quick, convenient support
+    </li>
+
+  </ul>
+
+</aside>
+
+
+<div class="form-side">
+
+  <h2 id="login-title">
+    Log in to Griahsathi
+  </h2>
+
+  <p class="sub">
+    Enter your details to continue
+    booking a service.
+  </p>
+
+
+  <div
+    id="message"
+    class="message"
+    role="alert"
+    aria-live="polite"
+  ></div>
+
+
+  <form
+    id="loginForm"
+    novalidate
+  >
+
+    <label>
+
+      Email address or phone number
+
+      <input
+        id="identifier"
+        type="text"
+        autocomplete="username"
+        placeholder="you@example.com or 9876543210"
+        required
+      />
+
+    </label>
+
+
+    <label>
+
+      Password
+
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Enter your password"
+        required
+      />
+
+    </label>
+
+
+    <div class="row">
+
+      <label class="remember">
+
+        <input
+          id="remember"
+          type="checkbox"
+          checked
+        />
+
+        Remember me
+
+      </label>
+
+
+      <a
+        class="forgot"
+        href="signup.html"
+      >
+        Need an account?
+      </a>
+
+    </div>
+
+
+    <button
+      class="button"
+      type="submit"
+    >
+      Log in
+    </button>
+
+  </form>
+
+
+  <p class="switch">
+
+    New to Griahsathi?
+
+    <a
+      id="signupLink"
+      href="signup.html"
+    >
+      Create an account
+    </a>
+
+  </p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+  <div class="wrap footer-inner">
+
+    <span>
+      © 2026 Griahsathi. Your home, our care.
+    </span>
+
+    <div class="footer-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="services.html">
+        Services
+      </a>
+
+      <a href="contact.html">
+        Contact
+      </a>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   THEME
+========================================= */
+
+const themeKey =
+  "griahsathi-theme";
+
+
+const applyTheme = theme => {
+
+  document.documentElement.dataset.theme =
+    theme;
+
+  document.getElementById(
+    "themeToggle"
+  ).textContent =
+    theme === "light"
+      ? "◐"
+      : "☼";
+
+};
+
+
+applyTheme(
+  localStorage.getItem(themeKey)
+  || "dark"
+);
+
+
+document
+  .getElementById("themeToggle")
+  .addEventListener(
+    "click",
+    () => {
+
+      const next =
+        document.documentElement.dataset.theme
+          === "light"
+          ? "dark"
+          : "light";
+
+      localStorage.setItem(
+        themeKey,
+        next
+      );
+
+      applyTheme(next);
+
+    }
+  );
+
+
+/* =========================================
+   REDIRECT
+========================================= */
+
+const params =
+  new URLSearchParams(
+    location.search
+  );
+
+
+const rawRedirect =
+  params.get("redirect") || "";
+
+
+const safeRedirect =
+  value => {
+
+    try {
+
+      const url =
+        new URL(
+          value,
+          location.origin
+        );
+
+      return (
+        url.origin === location.origin &&
+        /^\/[\w./-]*(?:\?[^#]*)?$/.test(
+          url.pathname + url.search
+        )
+      )
+        ? (
+            url.pathname
+              .replace(/^\//, "") +
+            url.search
+          ) || "index.html"
+        : "index.html";
+
+    } catch {
+
+      return "index.html";
+
+    }
+
+  };
+
+
+const redirectTo =
+  safeRedirect(rawRedirect);
+
+
+document.getElementById(
+  "signupLink"
+).href =
+  "signup.html" +
+  (
+    rawRedirect
+      ? "?redirect=" +
+        encodeURIComponent(
+          redirectTo
+        )
+      : ""
+  );
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+
+const show =
+  (
+    text,
+    type = "error"
+  ) => {
+
+    message.className =
+      "message " + type;
+
+    message.textContent =
+      text;
+
+  };
+
+
+/* =========================================
+   GET ALL CUSTOMERS
+========================================= */
+
+function getCustomers() {
+
+  try {
+
+    const customers =
+      JSON.parse(
+        localStorage.getItem(
+          "griahsathi-customers"
+        ) || "[]"
+      );
+
+    return Array.isArray(customers)
+      ? customers
+      : [];
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+document
+  .getElementById("loginForm")
+  .addEventListener(
+    "submit",
+    event => {
+
+      event.preventDefault();
+
+
+      const identifier =
+        document
+          .getElementById("identifier")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+
+      if (
+        !identifier ||
+        !password
+      ) {
+
+        return show(
+          "Please enter your email or phone number and password."
+        );
+
+      }
+
+
+      /* =====================================
+         GET ALL REGISTERED CUSTOMERS
+      ===================================== */
+
+      const customers =
+        getCustomers();
+
+
+      const email =
+        identifier.toLowerCase();
+
+
+      const phone =
+        identifier.replace(
+          /\D/g,
+          ""
+        );
+
+
+      /* =====================================
+         FIND MATCHING CUSTOMER
+      ===================================== */
+
+      const customer =
+        customers.find(
+          c =>
+            c.email === email ||
+            c.phone === phone
+        );
+
+
+      /* =====================================
+         CHECK PASSWORD
+      ===================================== */
+
+      if (
+        !customer ||
+        customer.password !== password
+      ) {
+
+        return show(
+          "That email/phone number or password does not match an account. Please check your details or sign up first."
+        );
+
+      }
+
+
+      /* =====================================
+         SAVE CURRENT CUSTOMER
+      ===================================== */
+
+      const currentCustomer = {
+
+        id:
+          customer.id,
+
+        name:
+          customer.name,
+
+        email:
+          customer.email,
+
+        phone:
+          customer.phone,
+
+        loggedInAt:
+          new Date().toISOString()
+
+      };
+
+
+      localStorage.setItem(
+        "griahsathi-current-customer",
+        JSON.stringify(
+          currentCustomer
+        )
+      );
+
+
+      /* =====================================
+         BACKWARD COMPATIBILITY
+         Keep logged-in session available
+         for existing Griahsathi pages.
+      ===================================== */
+
+      localStorage.setItem(
+        "griahsathi-logged-in",
+        JSON.stringify(
+          currentCustomer
+        )
+      );
+
+
+      /* =====================================
+         SUCCESS
+      ===================================== */
+
+      show(
+        "Login successful. Taking you there…",
+        "success"
+      );
+
+
+      setTimeout(
+        () => {
+
+          location.href =
+            redirectTo;
+
+        },
+        450
+      );
+
+    }
+  );
+
+</script>
+
+
+<script src="./griahsathi-core.js"></script>
+<script src="./griahsathi-language.js"></script>
+<script src="./griahsathi-ai.js"></script>
+
+</body>
+
+</html>

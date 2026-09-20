@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Worker Auth | Griahsathi</title>
+<link rel="stylesheet" href="./output.css">
+<script src="./griahsathi-core.js"></script>
+<style>
+body{background:#080B10;color:#fff;transition:.25s}.light-mode{background:#f5f7f6!important;color:#111827!important}
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1)}
+.light-mode .card{background:#fff;border-color:rgba(0,0,0,.08)} .light-mode input,.light-mode select,.light-mode textarea{background:#fff!important;color:#111827!important}
+.tab-active{background:rgba(74,222,128,.12);color:#4ade80;border-color:rgba(74,222,128,.3)}
+</style></head>
+<body class="antialiased">
+<div id="site-header"></div>
+<main class="min-h-screen px-5 pb-16 pt-28"><div class="mx-auto max-w-5xl">
+<div class="mb-8 text-center"><p class="text-sm font-semibold uppercase tracking-[.2em] text-green-400">Worker Portal</p>
+<h1 class="mt-3 text-4xl font-extrabold sm:text-5xl">Join Griahsathi</h1>
+<p class="mx-auto mt-4 max-w-2xl text-gray-400">Create or access your worker account using phone OTP or password.</p></div>
+
+<div class="card rounded-3xl p-6 sm:p-8">
+<div class="grid gap-3 sm:grid-cols-2"><button id="loginTab" class="tab-active rounded-xl border border-white/10 px-4 py-3 font-semibold">Login</button><button id="signupTab" class="rounded-xl border border-white/10 px-4 py-3 font-semibold">Create Account</button></div>
+
+<div id="loginPanel" class="mt-8">
+<h2 class="text-2xl font-bold">Worker Login</h2>
+<div class="mt-6 grid gap-5 sm:grid-cols-2">
+<div><label class="mb-2 block text-sm">Phone Number</label><input id="loginPhone" maxlength="10" inputmode="numeric" class="w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3" placeholder="10 digit number"></div>
+<div><label class="mb-2 block text-sm">Password</label><input id="loginPassword" type="password" class="w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3" placeholder="Your password"></div>
+</div>
+<div class="mt-4 flex flex-wrap gap-3"><button id="passwordLogin" class="rounded-xl bg-green-500 px-5 py-3 font-bold text-black">Login with Password</button><button id="sendLoginOtp" class="rounded-xl border border-green-400/30 px-5 py-3 font-semibold text-green-400">Login with OTP</button></div>
+<div id="loginOtpBox" class="mt-4 hidden"><input id="loginOtp" maxlength="6" inputmode="numeric" class="w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 sm:w-64" placeholder="Enter OTP"><button id="verifyLoginOtp" class="mt-3 rounded-xl bg-green-500 px-5 py-3 font-bold text-black">Verify OTP</button></div>
+</div>
+
+<div id="signupPanel" class="mt-8 hidden">
+<h2 class="text-2xl font-bold">Create Worker Account</h2>
+<p class="mt-2 text-sm text-gray-400">All fields marked * are required. Worker must be 18 or older.</p>
+<form id="signupForm" class="mt-6 grid gap-5 sm:grid-cols-2">
+<div><label class="mb-2 block text-sm">Name *</label><input required id="suName" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Phone Number *</label><input required id="suPhone" maxlength="10" inputmode="numeric" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Email ID *</label><input required type="email" id="suEmail" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Date of Birth *</label><input required type="date" id="suDob" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Professional Address *</label><input required id="suAddress" placeholder="Search/select on Maps (prototype)" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">PIN Code *</label><input required id="suPin" maxlength="6" inputmode="numeric" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">City *</label><input required id="suCity" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">District *</label><input required id="suDistrict" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">State *</label><input required id="suState" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Aadhaar Number *</label><input required id="suAadhaar" maxlength="12" inputmode="numeric" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div class="sm:col-span-2"><label class="mb-2 block text-sm">Languages Spoken *</label><input required id="suLanguages" placeholder="Hindi, English, Punjabi" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Certification/Diploma</label><input id="suCertName" placeholder="Optional certificate name" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Certificate File</label><input id="suCertFile" type="file" accept=".pdf,.jpg,.jpeg,.png" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div class="sm:col-span-2"><label class="mb-2 block text-sm">Description</label><textarea id="suDescription" rows="4" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3" placeholder="Tell customers about your experience and work."></textarea></div>
+<div><label class="mb-2 block text-sm">Create Password *</label><input required minlength="8" type="password" id="suPassword" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div><label class="mb-2 block text-sm">Confirm Password *</label><input required minlength="8" type="password" id="suConfirmPassword" class="field w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></div>
+<div class="sm:col-span-2 flex items-start gap-3"><input required id="suAadhaarConsent" type="checkbox" class="mt-1"><label for="suAadhaarConsent" class="text-sm text-gray-400">I confirm that the Aadhaar number provided belongs to me.</label></div>
+<div class="sm:col-span-2"><button class="w-full rounded-xl bg-green-500 px-6 py-4 font-bold text-black">Send OTP & Create Account</button></div>
+</form>
+<div id="signupOtpBox" class="mt-6 hidden rounded-2xl border border-green-400/20 bg-green-400/5 p-5"><p class="font-semibold text-green-400">Demo OTP generated</p><p id="demoOtp" class="mt-2 text-2xl font-bold tracking-widest"></p><input id="signupOtp" maxlength="6" inputmode="numeric" class="mt-4 w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 sm:w-64" placeholder="Enter OTP"><button id="verifySignupOtp" class="mt-3 rounded-xl bg-green-500 px-5 py-3 font-bold text-black">Verify & Create</button></div>
+</div>
+<div id="authMsg" class="mt-6 hidden rounded-xl px-4 py-3 text-sm"></div>
+</div></div></main>
+
+<script>
+document.getElementById("site-header").innerHTML=GS.nav(); GS.bindNav();
+const loginTab=document.getElementById("loginTab"), signupTab=document.getElementById("signupTab"), loginPanel=document.getElementById("loginPanel"), signupPanel=document.getElementById("signupPanel");
+function showTab(mode){const login=mode==="login";loginPanel.classList.toggle("hidden",!login);signupPanel.classList.toggle("hidden",login);loginTab.classList.toggle("tab-active",login);signupTab.classList.toggle("tab-active",!login)}
+loginTab.onclick=()=>showTab("login");signupTab.onclick=()=>showTab("signup");
+const msg=document.getElementById("authMsg"); function showMsg(t,ok=false){msg.textContent=t;msg.className=`mt-6 rounded-xl px-4 py-3 text-sm ${ok?"bg-green-400/10 text-green-300":"bg-red-400/10 text-red-300"}`;msg.classList.remove("hidden")}
+let pendingSignup=null, loginOtpValue=null;
+document.getElementById("signupForm").onsubmit=e=>{e.preventDefault();
+ const phone=suPhone.value.replace(/\D/g,""), pin=suPin.value.replace(/\D/g,""), aad=suAadhaar.value.replace(/\D/g,"");
+ if(!/^\d{10}$/.test(phone)) return showMsg("Phone number must contain exactly 10 digits.");
+ if(!/^\d{6}$/.test(pin)) return showMsg("PIN code must contain exactly 6 digits.");
+ if(!/^\d{12}$/.test(aad)) return showMsg("Aadhaar number must contain exactly 12 digits.");
+ if(!GS.adult(suDob.value)) return showMsg("Worker must be 18 years or older.");
+ if(suPassword.value.length<8) return showMsg("Password must contain at least 8 characters.");
+ if(suPassword.value!==suConfirmPassword.value) return showMsg("Passwords do not match.");
+ if(GS.workers().some(w=>w.phone===phone)) return showMsg("A worker account already exists for this phone number.");
+ pendingSignup={name:suName.value.trim(),phone,email:suEmail.value.trim(),dob:suDob.value,address:suAddress.value.trim(),pincode:pin,city:suCity.value.trim(),district:suDistrict.value.trim(),state:suState.value.trim(),aadhaar:aad,languages:suLanguages.value.split(",").map(x=>x.trim()).filter(Boolean),certName:suCertName.value.trim(),description:suDescription.value.trim(),password:GS.hashPassword(suPassword.value)};
+ const otp=GS.genOtp(); pendingSignup.otp=otp; demoOtp.textContent=otp;signupOtpBox.classList.remove("hidden");showMsg("Demo OTP generated. Enter it below.",true);
+};
+document.getElementById("verifySignupOtp").onclick=()=>{
+ if(!pendingSignup || signupOtp.value!==pendingSignup.otp) return showMsg("Incorrect OTP.");
+ const id=GS.nextWorkerId(); const p=pendingSignup;
+ const worker={id:id,name:p.name,phone:p.phone,email:p.email,dob:p.dob,address:p.address,pincode:p.pincode,city:p.city,district:p.district,state:p.state,aadhaar:p.aadhaar,languages:p.languages,description:p.description,password:p.password,profilePhoto:"",available:false,workerType:"worker",verificationStatus:"approved",contractorVerification:"not-required",certifications:p.certName?[{name:p.certName,verified:false,status:"pending"}]:[],services:[],reviews:[],ratingAverage:0,totalRatings:0,totalCompletedJobs:0,todayEarnings:0,totalEarnings:0,notifications:[]};
+ const file=document.getElementById("suCertFile").files[0]; if(file&&p.certName) worker.certifications=[{name:p.certName,verified:false,status:"pending",fileName:file.name}];
+ GS.saveWorker(worker);localStorage.setItem(GS.keys.workerSession,id);window.location.href="worker-dashboard.html";
+};
+document.getElementById("passwordLogin").onclick=()=>{const phone=loginPhone.value.replace(/\D/g,"");const w=GS.workers().find(x=>x.phone===phone);if(!w)return showMsg("No worker account found for this phone number.");if(GS.hashPassword(loginPassword.value)!==w.password)return showMsg("Incorrect password.");localStorage.setItem(GS.keys.workerSession,w.id);location.href="worker-dashboard.html";};
+document.getElementById("sendLoginOtp").onclick=()=>{const phone=loginPhone.value.replace(/\D/g,"");const w=GS.workers().find(x=>x.phone===phone);if(!w)return showMsg("No worker account found for this phone number.");loginOtpValue=GS.genOtp();document.getElementById("loginOtpBox").classList.remove("hidden");showMsg(`Demo OTP: ${loginOtpValue}`,true)};
+document.getElementById("verifyLoginOtp").onclick=()=>{if(loginOtp.value!==loginOtpValue)return showMsg("Incorrect OTP.");const w=GS.workers().find(x=>x.phone===loginPhone.value.replace(/\D/g,""));localStorage.setItem(GS.keys.workerSession,w.id);location.href="worker-dashboard.html";};
+</script><script src="./griahsathi-language.js"></script>
+<script src="./griahsathi-ai.js"></script>
+</body></html>

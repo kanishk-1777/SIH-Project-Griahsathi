@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | Griahsathi</title>
+  <link rel="stylesheet" href="./output.css">
+  <script src="./griahsathi-core.js"></script>
+  <script src="./navbar.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#080b10;color:#fff;font-family:Arial,Helvetica,sans-serif;transition:.25s}
+    body.light-mode{background:#f5f7f6;color:#111827}
+    .pacifico{font-family:'Pacifico',cursive}
+    .page{min-height:100vh;padding:110px 20px 50px}
+    .wrap{width:min(1050px,100%);margin:auto}
+    .hero,.card{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);border-radius:24px;box-shadow:0 12px 35px rgba(0,0,0,.15)}
+    .hero{padding:30px;background:linear-gradient(135deg,rgba(34,197,94,.10),rgba(255,255,255,.02))}
+    .card{padding:24px;margin-top:20px}
+    .avatar{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:#22c55e;color:#041007;font-size:36px;font-weight:800;overflow:hidden;position:relative}.avatar img{width:100%;height:100%;object-fit:cover}.photo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.file-input{display:none}.photo-btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(74,222,128,.3);background:rgba(74,222,128,.08);color:#86efac;border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer}.photo-btn:hover{background:rgba(74,222,128,.16)}
+    input,textarea{width:100%;border:1px solid #303a46;background:#080c12;color:#fff;border-radius:11px;padding:13px;outline:none}
+    input:focus,textarea:focus{border-color:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.1)}
+    input:disabled,textarea:disabled{opacity:.65}
+    label{display:block;color:#aab4c0;font-size:14px;margin:0 0 7px}
+    .btn{border:0;border-radius:11px;padding:12px 18px;font-weight:700;cursor:pointer}
+    .green{background:#22c55e;color:#041007}.dark{background:#202832;color:#fff;border:1px solid #303a46}.danger{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+    .empty{padding:28px;text-align:center;border:1px dashed #303a46;border-radius:15px;color:#87919d}
+    .success{display:none;margin-top:15px;padding:12px;border-radius:10px;background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .booking{padding:16px;border:1px solid #27313c;border-radius:15px;background:#0b1016;margin-top:12px}
+    body.light-mode .hero,body.light-mode .card{background:#fff;border-color:#dce5df}
+    body.light-mode input,body.light-mode textarea{background:#f8faf9;color:#111827;border-color:#d5ded8}
+    body.light-mode label{color:#5e6a63}
+    body.light-mode .booking{background:#f8faf9;border-color:#dce5df}
+    @media(max-width:700px){.page{padding-top:95px}.grid{grid-template-columns:1fr}.hero{padding:22px}.card{padding:20px}}
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="page">
+    <div class="wrap">
+      <section class="hero">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div>
+            <div class="avatar" id="avatar">?</div>
+            <div class="photo-actions">
+              <label for="profilePhotoInput" class="photo-btn">📷 Upload Photo</label>
+              <button id="removePhotoBtn" class="btn dark" type="button" style="padding:9px 12px">Remove</button>
+              <input id="profilePhotoInput" class="file-input" type="file" accept="image/png,image/jpeg,image/webp">
+            </div>
+            <div id="photoMsg" style="color:#94a3b8;font-size:12px;margin-top:6px">Optional · JPG, PNG or WebP · Max 2 MB</div>
+          </div>
+          <div>
+            <div style="color:#94a3b8;font-size:14px">Welcome back</div>
+            <h1 id="nameHeading" class="pacifico" style="font-size:34px;margin:6px 0">Customer</h1>
+            <div id="emailHeading" style="color:#94a3b8">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0;font-size:24px">Personal Information</h2>
+            <p style="color:#94a3b8;margin:6px 0 0">Manage your Griahsathi customer details.</p>
+          </div>
+          <button id="editBtn" class="btn dark" type="button">✏️ Edit</button>
+        </div>
+
+        <form id="profileForm" style="margin-top:22px">
+          <div class="grid">
+            <div><label for="name">Full Name</label><input id="name" disabled required></div>
+            <div><label for="email">Email</label><input id="email" type="email" disabled></div>
+            <div><label for="phone">Phone</label><input id="phone" disabled></div>
+            <div><label for="city">City</label><input id="city" disabled></div>
+            <div><label for="district">District</label><input id="district" disabled></div>
+            <div><label for="state">State</label><input id="state" disabled></div>
+          </div>
+          <div style="margin-top:16px"><label for="pincode">PIN Code</label><input id="pincode" maxlength="6" disabled></div>
+          <div style="margin-top:16px"><label for="address">Address</label><textarea id="address" rows="4" disabled></textarea></div>
+
+          <div id="actions" style="display:none;gap:10px;flex-wrap:wrap;margin-top:18px">
+            <button class="btn green" type="submit">💾 Save Changes</button>
+            <button class="btn dark" type="button" id="cancelBtn">Cancel</button>
+          </div>
+          <div id="success" class="success">✓ Profile updated successfully.</div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2 style="margin:0 0 16px;font-size:24px">Account Information</h2>
+        <div class="grid">
+          <div><label>Customer ID</label><div id="customerId" style="font-weight:700;word-break:break-all">—</div></div>
+          <div><label>Account Created</label><div id="createdAt" style="font-weight:700">—</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0;font-size:24px">My Bookings</h2>
+            <p style="color:#94a3b8;margin:6px 0 0">Bookings belonging to this customer.</p>
+          </div>
+          <a href="find-worker.html" class="btn green" style="text-decoration:none;display:inline-block">+ Book Service</a>
+        </div>
+        <div id="bookings" style="margin-top:18px"></div>
+      </section>
+
+      <section class="card">
+        <h2 style="margin:0;font-size:24px">My Reviews</h2>
+        <p style="color:#94a3b8;margin:6px 0 0">Reviews you submitted after completed services.</p>
+        <div id="reviews" style="margin-top:18px"></div>
+      </section>
+
+      <section class="card" id="complaintSection">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+          <div>
+            <h2 style="margin:0;font-size:24px">Complaints &amp; Issue Resolution</h2>
+            <p style="color:#94a3b8;margin:6px 0 0">Raise a private complaint about your booking or service. Only you and Griahsathi Admin can view it.</p>
+          </div>
+          <button id="newComplaintBtn" class="btn green" type="button">+ Raise Complaint</button>
+        </div>
+
+        <div id="complaintFormWrap" style="display:none;margin-top:20px;padding:18px;border:1px solid rgba(34,197,94,.20);background:rgba(34,197,94,.05);border-radius:16px">
+          <form id="complaintForm">
+            <div class="grid">
+              <div>
+                <label for="complaintCategory">Issue Category</label>
+                <select id="complaintCategory" required style="width:100%;border:1px solid #303a46;background:#080c12;color:#fff;border-radius:11px;padding:13px;outline:none">
+                  <option value="">Select an issue</option>
+                  <option value="Service Quality">Service Quality</option>
+                  <option value="Worker Behaviour">Worker Behaviour</option>
+                  <option value="Payment / Pricing">Payment / Pricing</option>
+                  <option value="Booking Issue">Booking Issue</option>
+                  <option value="Worker No-Show">Worker No-Show</option>
+                  <option value="Safety Concern">Safety Concern</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="complaintBooking">Related Booking (optional)</label>
+                <select id="complaintBooking" style="width:100%;border:1px solid #303a46;background:#080c12;color:#fff;border-radius:11px;padding:13px;outline:none"></select>
+              </div>
+            </div>
+            <div style="margin-top:16px">
+              <label for="complaintSubject">Complaint Subject</label>
+              <input id="complaintSubject" maxlength="120" placeholder="Briefly describe the issue" required>
+            </div>
+            <div style="margin-top:16px">
+              <label for="complaintDescription">Complaint Details</label>
+              <textarea id="complaintDescription" rows="6" maxlength="2000" placeholder="Explain what happened, including any relevant details..." required></textarea>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+              <button class="btn green" type="submit">📨 Submit Complaint</button>
+              <button class="btn dark" type="button" id="cancelComplaintBtn">Cancel</button>
+            </div>
+          </form>
+          <div id="complaintFormMsg" style="display:none;margin-top:12px;padding:12px;border-radius:10px;font-size:13px"></div>
+        </div>
+        <div id="myComplaints" style="margin-top:20px"></div>
+      </section>
+
+      <section class="card" style="border-color:rgba(239,68,68,.25);background:rgba(239,68,68,.04)">
+        <div>
+          <h2 style="margin:0;font-size:24px;color:#fca5a5">Danger Zone</h2>
+          <p style="color:#94a3b8;margin:6px 0 0">Deleting your account permanently removes your customer account, your complaints, and your customer booking history from this browser demo.</p>
+        </div>
+        <button id="deleteAccountBtn" class="btn danger" type="button" style="margin-top:16px">🗑️ Delete My Account</button>
+        <div id="deleteAccountPanel" style="display:none;margin-top:16px;padding:16px;border:1px solid rgba(239,68,68,.25);border-radius:14px;background:rgba(0,0,0,.12)">
+          <label for="deletePassword">Enter your account password to confirm</label>
+          <input id="deletePassword" type="password" autocomplete="current-password" placeholder="Enter your password">
+          <p style="color:#94a3b8;font-size:12px;margin:8px 0 0">This confirmation is required before the account can be deleted.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+            <button id="confirmDeleteAccount" class="btn danger" type="button">Confirm Delete</button>
+            <button id="cancelDeleteAccount" class="btn dark" type="button">Cancel</button>
+          </div>
+          <div id="deleteAccountMsg" style="display:none;margin-top:12px;padding:12px;border-radius:10px;font-size:13px"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="find-worker.html" class="btn dark" style="text-decoration:none">🔎 Find a Worker</a>
+          <button id="logoutBtn" class="btn danger" type="button">🚪 Logout</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const CUSTOMER_KEY = 'griahsathi-customers';
+    const CURRENT_KEY = 'griahsathi-current-customer';
+
+    function getCustomer(){
+      try{
+        if(window.GS && typeof GS.currentLoggedInCustomer==='function'){
+          const c=GS.currentLoggedInCustomer();
+          if(c) return c;
+        }
+      }catch(e){}
+
+      try{
+        const current=JSON.parse(localStorage.getItem(CURRENT_KEY)||'null');
+        const customers=JSON.parse(localStorage.getItem(CUSTOMER_KEY)||'[]');
+        if(current && Array.isArray(customers)){
+          if(current.id){
+            const c=customers.find(x=>String(x.id)===String(current.id));
+            if(c) return c;
+          }
+          if(current.email){
+            const email=String(current.email).trim().toLowerCase();
+            const c=customers.find(x=>String(x.email||'').trim().toLowerCase()===email);
+            if(c) return c;
+          }
+          if(current.phone){
+            const phone=String(current.phone).replace(/\D/g,'');
+            const c=customers.find(x=>String(x.phone||'').replace(/\D/g,'')===phone);
+            if(c) return c;
+          }
+          return current;
+        }
+      }catch(e){}
+      return null;
+    }
+
+    function saveCustomer(customer){
+      const customers=JSON.parse(localStorage.getItem(CUSTOMER_KEY)||'[]');
+      const index=customers.findIndex(x=>x.id && customer.id && String(x.id)===String(customer.id));
+      if(index>=0) customers[index]={...customers[index],...customer};
+      else customers.push(customer);
+      localStorage.setItem(CUSTOMER_KEY,JSON.stringify(customers));
+      localStorage.setItem(CURRENT_KEY,JSON.stringify(index>=0?customers[index]:customer));
+      return index>=0?customers[index]:customer;
+    }
+
+    function esc(v){
+      return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    }
+
+    function fill(c){
+      document.getElementById('nameHeading').textContent=c.name||'Customer';
+      document.getElementById('emailHeading').textContent=c.email||'No email available';
+      const avatar=document.getElementById('avatar');
+      const initial=(c.name||'C').trim().charAt(0).toUpperCase();
+      avatar.innerHTML=c.profilePhoto ? `<img src="${esc(c.profilePhoto)}" alt="Profile photo">` : initial;
+      document.getElementById('name').value=c.name||'';
+      document.getElementById('email').value=c.email||'';
+      document.getElementById('phone').value=c.phone||'';
+      document.getElementById('city').value=c.city||'';
+      document.getElementById('district').value=c.district||'';
+      document.getElementById('state').value=c.state||'';
+      document.getElementById('pincode').value=c.pincode||'';
+      document.getElementById('address').value=c.address||'';
+      document.getElementById('customerId').textContent=c.id||'—';
+      const d=c.createdAt?new Date(c.createdAt):null;
+      document.getElementById('createdAt').textContent=d&&!isNaN(d)?d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}):'Recently created';
+    }
+
+    function setProfilePhoto(photoData){
+      const current=getCustomer();
+      if(!current) return;
+      const updated={...current,profilePhoto:photoData||'',updatedAt:new Date().toISOString()};
+      const saved=saveCustomer(updated);
+      fill(saved);
+      setEditing(false);
+      const msg=document.getElementById('photoMsg');
+      if(msg){
+        msg.textContent=photoData ? 'Profile photo updated.' : 'Profile photo removed.';
+        msg.style.color='#4ade80';
+        setTimeout(()=>{msg.textContent='Optional · JPG, PNG or WebP · Max 2 MB';msg.style.color='#94a3b8'},2200);
+      }
+    }
+
+    function initProfilePhoto(){
+      const input=document.getElementById('profilePhotoInput');
+      const remove=document.getElementById('removePhotoBtn');
+      if(!input||!remove) return;
+      input.addEventListener('change',()=>{
+        const file=input.files && input.files[0];
+        if(!file) return;
+        if(file.size>2*1024*1024){
+          alert('Please choose an image smaller than 2 MB.');
+          input.value='';
+          return;
+        }
+        if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
+          alert('Please choose a JPG, PNG or WebP image.');
+          input.value='';
+          return;
+        }
+        const reader=new FileReader();
+        reader.onload=()=>{
+          setProfilePhoto(String(reader.result||''));
+          input.value='';
+        };
+        reader.onerror=()=>alert('Could not read that image. Please try another file.');
+        reader.readAsDataURL(file);
+      });
+      remove.addEventListener('click',()=>{
+        const current=getCustomer();
+        if(!current || !current.profilePhoto) return;
+        if(!confirm('Remove your profile photo?')) return;
+        setProfilePhoto('');
+      });
+    }
+
+    function setEditing(enabled){
+      ['name','phone','city','district','state','pincode','address'].forEach(id=>document.getElementById(id).disabled=!enabled);
+      document.getElementById('actions').style.display=enabled?'flex':'none';
+      document.getElementById('editBtn').style.display=enabled?'none':'inline-block';
+    }
+
+    function renderBookings(c){
+      let bookings=[];
+      try{bookings=JSON.parse(localStorage.getItem('griahsathi-bookings')||'[]')}catch(e){bookings=[]}
+      const own=Array.isArray(bookings)?bookings.filter(b=>{
+        if(b.customerId && c.id) return String(b.customerId)===String(c.id);
+        const bp=String(b.customerPhone||'').replace(/\D/g,'');
+        const cp=String(c.phone||'').replace(/\D/g,'');
+        const be=String(b.customerEmail||'').trim().toLowerCase();
+        const ce=String(c.email||'').trim().toLowerCase();
+        return (bp&&cp&&bp===cp)||(be&&ce&&be===ce);
+      }):[];
+      const el=document.getElementById('bookings');
+      if(!own.length){el.innerHTML='<div class="empty">📋<br><strong style="display:block;margin-top:8px;color:inherit">No bookings yet</strong><div style="margin-top:6px">Your service bookings will appear here.</div></div>';return;}
+      el.innerHTML=own.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(b=>`<div class="booking"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>${esc(b.service||'Service')}</strong><span style="color:#4ade80;font-weight:700">${esc(b.status||'Pending')}</span></div><div style="margin-top:8px;color:#94a3b8;font-size:14px">Worker: ${esc(b.workerName||'Worker')} · ${esc(b.date||'—')} ${esc(b.time||'')}</div><div style="margin-top:6px;font-size:14px">Booking ID: ${esc(b.id||'—')}</div></div>`).join('');
+    }
+
+    function renderReviews(c){
+      let bookings=[];
+      try{
+        bookings=JSON.parse(localStorage.getItem('griahsathi-bookings')||'[]');
+      }catch(e){
+        bookings=[];
+      }
+      if(!Array.isArray(bookings)) bookings=[];
+
+      // Reviews are stored on completed bookings and also on the worker profile.
+      // Build the customer review list from those authoritative sources instead
+      // of relying on a separate griahsathi-reviews key.
+      const ownBookings=bookings.filter(b=>{
+        if(b.customerId && c.id){
+          return String(b.customerId)===String(c.id);
+        }
+
+        const bp=String(b.customerPhone||'').replace(/\D/g,'');
+        const cp=String(c.phone||'').replace(/\D/g,'');
+        const be=String(b.customerEmail||'').trim().toLowerCase();
+        const ce=String(c.email||'').trim().toLowerCase();
+        return (bp&&cp&&bp===cp)||(be&&ce&&be===ce);
+      });
+
+      const reviews=[];
+
+      ownBookings.forEach(booking=>{
+        if(!booking.reviewSubmitted || !Number(booking.rating)) return;
+
+        let workerName=booking.workerName||'Worker';
+        let reviewText=booking.review||'';
+        let rating=Number(booking.rating||0);
+        let createdAt=booking.reviewedAt||booking.updatedAt||booking.createdAt;
+
+        // Prefer the worker's stored review when available.
+        try{
+          const workers=JSON.parse(localStorage.getItem('griahsathi-workers')||'[]');
+          if(Array.isArray(workers)){
+            const worker=workers.find(w=>String(w.id)===String(booking.workerId));
+            if(worker){
+              const workerReviews=Array.isArray(worker.reviews)?worker.reviews:[];
+              const stored=workerReviews.find(r=>String(r.bookingId||'')===String(booking.id));
+              if(stored){
+                workerName=worker.name||workerName;
+                rating=Number(stored.rating||rating);
+                reviewText=stored.review||reviewText;
+                createdAt=stored.createdAt||createdAt;
+              }
+            }
+          }
+        }catch(e){}
+
+        reviews.push({
+          bookingId:booking.id,
+          workerName,
+          rating,
+          review:reviewText,
+          createdAt
+        });
+      });
+
+      // Backward compatibility for any older reviews saved in a separate key.
+      try{
+        const legacy=JSON.parse(localStorage.getItem('griahsathi-reviews')||'[]');
+        if(Array.isArray(legacy)){
+          legacy.forEach(r=>{
+            const matchesCustomer =
+              (r.customerId && c.id && String(r.customerId)===String(c.id)) ||
+              (r.customerEmail && c.email && String(r.customerEmail).toLowerCase()===String(c.email).toLowerCase()) ||
+              (r.customerPhone && c.phone && String(r.customerPhone).replace(/\D/g,'')===String(c.phone).replace(/\D/g,''));
+
+            if(!matchesCustomer) return;
+            if(reviews.some(x=>String(x.bookingId||'')===String(r.bookingId||''))) return;
+
+            reviews.push({
+              bookingId:r.bookingId||'',
+              workerName:r.workerName||'Worker',
+              rating:Number(r.rating||0),
+              review:r.review||r.comment||'',
+              createdAt:r.createdAt||''
+            });
+          });
+        }
+      }catch(e){}
+
+      reviews.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+
+      const el=document.getElementById('reviews');
+
+      if(!reviews.length){
+        el.innerHTML='<div class="empty">⭐<br><strong style="display:block;margin-top:8px;color:inherit">No reviews yet</strong><div style="margin-top:6px">Reviews submitted after completed services will appear here.</div></div>';
+        return;
+      }
+
+      el.innerHTML=reviews.map(r=>{
+        const stars=Math.max(0,Math.min(5,Number(r.rating||0)));
+        const date=r.createdAt && !isNaN(new Date(r.createdAt))
+          ? new Date(r.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})
+          : '';
+
+        return `<div class="booking">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <strong>${esc(r.workerName||'Worker')}</strong>
+            ${date?`<span style="color:#94a3b8;font-size:13px">${esc(date)}</span>`:''}
+          </div>
+          <div style="margin-top:6px;color:#facc15;font-size:20px">${'★'.repeat(stars)}<span style="color:#475569">${'★'.repeat(5-stars)}</span></div>
+          <p style="margin:10px 0 0">${esc(r.review||'No written review.')}</p>
+          ${r.bookingId?`<div style="margin-top:8px;color:#64748b;font-size:12px">Booking ID: ${esc(r.bookingId)}</div>`:''}
+        </div>`;
+      }).join('');
+    }
+
+
+    function complaintStatusLabel(status){
+      const s=String(status||'pending').toLowerCase();
+      if(s==='under-review'||s==='under review'||s==='review') return 'Under Review';
+      if(s==='resolved') return 'Resolved';
+      if(s==='rejected') return 'Rejected';
+      return 'Pending';
+    }
+
+    function complaintStatusStyle(status){
+      const s=String(status||'pending').toLowerCase();
+      if(s==='resolved') return 'background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.25)';
+      if(s==='rejected') return 'background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)';
+      if(s==='under-review'||s==='under review'||s==='review') return 'background:rgba(59,130,246,.12);color:#93c5fd;border:1px solid rgba(59,130,246,.25)';
+      return 'background:rgba(250,204,21,.12);color:#fde047;border:1px solid rgba(250,204,21,.25)';
+    }
+
+    function getAllComplaints(){
+      try{
+        const list=window.GS&&typeof GS.complaints==='function' ? GS.complaints() : JSON.parse(localStorage.getItem('griahsathi-complaints')||'[]');
+        return Array.isArray(list)?list:[];
+      }catch(e){return []}
+    }
+
+    function saveAllComplaints(list){
+      if(window.GS&&typeof GS.saveComplaints==='function') GS.saveComplaints(list);
+      else localStorage.setItem('griahsathi-complaints',JSON.stringify(list));
+    }
+
+    function complaintBelongsToCustomer(c,customer){
+      if(!c||!customer) return false;
+      if(c.customerId&&customer.id) return String(c.customerId)===String(customer.id);
+      const cp=String(customer.phone||'').replace(/\D/g,'');
+      const ce=String(customer.email||'').trim().toLowerCase();
+      const rp=String(c.customerPhone||'').replace(/\D/g,'');
+      const re=String(c.customerEmail||'').trim().toLowerCase();
+      return (cp&&rp&&cp===rp)||(ce&&re&&ce===re);
+    }
+
+    function renderComplaintBookingOptions(customer){
+      const select=document.getElementById('complaintBooking');
+      if(!select) return;
+      let bookings=[];
+      try{bookings=JSON.parse(localStorage.getItem('griahsathi-bookings')||'[]')}catch(e){bookings=[]}
+      if(!Array.isArray(bookings)) bookings=[];
+      const own=bookings.filter(b=>{
+        if(b.customerId&&customer.id) return String(b.customerId)===String(customer.id);
+        const bp=String(b.customerPhone||'').replace(/\D/g,'');
+        const cp=String(customer.phone||'').replace(/\D/g,'');
+        const be=String(b.customerEmail||'').trim().toLowerCase();
+        const ce=String(customer.email||'').trim().toLowerCase();
+        return (bp&&cp&&bp===cp)||(be&&ce&&be===ce);
+      });
+      select.innerHTML='<option value="">No specific booking</option>'+own.map(b=>{
+        const label=[b.service||'Service',b.workerName||'Worker',b.date||'',b.id?`#${b.id}`:''].filter(Boolean).join(' · ');
+        return `<option value="${esc(b.id||'')}">${esc(label)}</option>`;
+      }).join('');
+    }
+
+    function renderComplaints(customer){
+      const el=document.getElementById('myComplaints');
+      if(!el) return;
+      const own=getAllComplaints().filter(c=>complaintBelongsToCustomer(c,customer)).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+      if(!own.length){
+        el.innerHTML='<div class="empty">🛡️<br><strong style="display:block;margin-top:8px;color:inherit">No complaints</strong><div style="margin-top:6px">Your complaints and admin resolutions will appear here.</div></div>';
+        return;
+      }
+      el.innerHTML=own.map(c=>{
+        const status=complaintStatusLabel(c.status);
+        const created=c.createdAt&&!isNaN(new Date(c.createdAt))?new Date(c.createdAt).toLocaleString('en-IN'):'';
+        const updated=c.updatedAt&&!isNaN(new Date(c.updatedAt))?new Date(c.updatedAt).toLocaleString('en-IN'):'';
+        return `<div class="booking" style="background:rgba(255,255,255,.015)">
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+            <div style="min-width:0;flex:1">
+              <div style="font-weight:800;font-size:16px">${esc(c.subject||c.title||'Complaint')}</div>
+              <div style="margin-top:5px;color:#94a3b8;font-size:12px">Complaint ID: ${esc(c.id||'—')}</div>
+              ${c.category?`<div style="margin-top:4px;color:#94a3b8;font-size:12px">Category: ${esc(c.category)}</div>`:''}
+              ${c.workerName?`<div style="margin-top:4px;color:#94a3b8;font-size:12px">Worker: ${esc(c.workerName)}</div>`:''}
+            </div>
+            <span style="display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800;${complaintStatusStyle(c.status)}">${esc(status)}</span>
+          </div>
+          <div style="margin-top:14px;padding:13px;border-radius:12px;background:rgba(255,255,255,.025)">
+            <div style="color:#87919d;font-size:11px;text-transform:uppercase;letter-spacing:.08em">Your Complaint</div>
+            <div style="margin-top:6px;white-space:pre-line;line-height:1.6">${esc(c.description||c.text||'No description provided.')}</div>
+          </div>
+          ${c.adminResponse?`<div style="margin-top:12px;padding:13px;border-radius:12px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15)">
+            <div style="color:#4ade80;font-size:11px;text-transform:uppercase;letter-spacing:.08em">Admin Response / Resolution</div>
+            <div style="margin-top:6px;white-space:pre-line;line-height:1.6">${esc(c.adminResponse)}</div>
+          </div>`:''}
+          <div style="margin-top:12px;color:#64748b;font-size:12px">
+            ${created?`Submitted: ${esc(created)}`:''}
+            ${updated?` · Last updated: ${esc(updated)}`:''}
+            ${c.bookingId?` · Booking: ${esc(c.bookingId)}`:''}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function initComplaints(customer){
+      const newBtn=document.getElementById('newComplaintBtn');
+      const formWrap=document.getElementById('complaintFormWrap');
+      const form=document.getElementById('complaintForm');
+      const cancel=document.getElementById('cancelComplaintBtn');
+      const msg=document.getElementById('complaintFormMsg');
+      renderComplaintBookingOptions(customer);
+      renderComplaints(customer);
+
+      if(newBtn) newBtn.onclick=()=>{
+        formWrap.style.display='block';
+        renderComplaintBookingOptions(getCustomer()||customer);
+        document.getElementById('complaintCategory').focus();
+      };
+
+      if(cancel) cancel.onclick=()=>{
+        form.reset();formWrap.style.display='none';if(msg)msg.style.display='none';
+      };
+
+      if(form) form.onsubmit=e=>{
+        e.preventDefault();
+        const current=getCustomer();
+        if(!current){alert('Please login again to raise a complaint.');return;}
+        const category=document.getElementById('complaintCategory').value.trim();
+        const bookingId=document.getElementById('complaintBooking').value.trim();
+        const subject=document.getElementById('complaintSubject').value.trim();
+        const description=document.getElementById('complaintDescription').value.trim();
+
+        if(!category||!subject||!description){
+          if(msg){msg.textContent='Please complete the issue category, subject and complaint details.';msg.style.display='block';msg.style.background='rgba(239,68,68,.12)';msg.style.color='#f87171';}
+          return;
+        }
+
+        let booking=null;
+        if(bookingId){
+          try{
+            const bookings=JSON.parse(localStorage.getItem('griahsathi-bookings')||'[]');
+            booking=Array.isArray(bookings)?bookings.find(b=>{
+              if(String(b.id)!==String(bookingId)) return false;
+              if(b.customerId&&current.id) return String(b.customerId)===String(current.id);
+              const bp=String(b.customerPhone||'').replace(/\D/g,'');
+              const cp=String(current.phone||'').replace(/\D/g,'');
+              const be=String(b.customerEmail||'').trim().toLowerCase();
+              const ce=String(current.email||'').trim().toLowerCase();
+              return (bp&&cp&&bp===cp)||(be&&ce&&be===ce);
+            }):null;
+          }catch(e){booking=null}
+        }
+
+        const complaint={
+          id:window.GS&&typeof GS.uid==='function'?GS.uid('CMP'):'CMP-'+Date.now()+'-'+Math.random().toString(36).slice(2,8).toUpperCase(),
+          customerId:current.id||'',
+          customerName:current.name||'Customer',
+          customerEmail:current.email||'',
+          customerPhone:current.phone||'',
+          category,subject,title:subject,description,
+          bookingId:booking?booking.id:'',
+          workerId:booking?booking.workerId:'',
+          workerName:booking?booking.workerName||'':'',
+          status:'pending',
+          adminResponse:'',
+          createdAt:new Date().toISOString()
+        };
+
+        try{
+          if(window.GS&&typeof GS.addComplaint==='function') GS.addComplaint(complaint);
+          else{const all=getAllComplaints();all.push(complaint);saveAllComplaints(all);}
+        }catch(err){
+          const all=getAllComplaints();all.push(complaint);saveAllComplaints(all);
+        }
+
+        form.reset();formWrap.style.display='none';
+        if(msg){msg.textContent=`Complaint submitted successfully. Complaint ID: ${complaint.id}`;msg.style.display='block';msg.style.background='rgba(34,197,94,.12)';msg.style.color='#4ade80';}
+        renderComplaints(current);
+      };
+    }
+
+    function deleteCustomerAccount(){
+      const current=getCustomer();
+      if(!current || !current.id){
+        alert('Could not identify the current customer account. Please log in again.');
+        return;
+      }
+
+      const password=(document.getElementById('deletePassword').value||'');
+      const msg=document.getElementById('deleteAccountMsg');
+      const showDeleteMsg=(text,ok=false)=>{
+        msg.textContent=text;
+        msg.style.display='block';
+        msg.style.background=ok?'rgba(34,197,94,.12)':'rgba(239,68,68,.12)';
+        msg.style.color=ok?'#4ade80':'#fca5a5';
+        msg.style.border=ok?'1px solid rgba(34,197,94,.25)':'1px solid rgba(239,68,68,.25)';
+      };
+
+      if(!password){
+        showDeleteMsg('Please enter your account password.');
+        return;
+      }
+
+      if(String(current.password||'') !== password){
+        showDeleteMsg('Incorrect password. Account was not deleted.');
+        document.getElementById('deletePassword').focus();
+        return;
+      }
+
+      const confirmed=confirm('Delete your Griahsathi customer account permanently? This action cannot be undone.');
+      if(!confirmed)return;
+
+      try{
+        /* Remove only this customer's account. */
+        let customers=[];
+        try{customers=JSON.parse(localStorage.getItem(CUSTOMER_KEY)||'[]')}catch(e){customers=[]}
+        if(Array.isArray(customers)){
+          customers=customers.filter(c=>String(c.id||'')!==String(current.id));
+          localStorage.setItem(CUSTOMER_KEY,JSON.stringify(customers));
+        }
+
+        /* Remove only this customer's bookings. */
+        let bookings=[];
+        try{bookings=JSON.parse(localStorage.getItem('griahsathi-bookings')||'[]')}catch(e){bookings=[]}
+        if(Array.isArray(bookings)){
+          bookings=bookings.filter(b=>{
+            if(b.customerId) return String(b.customerId)!==String(current.id);
+            const bp=String(b.customerPhone||'').replace(/\D/g,'');
+            const cp=String(current.phone||'').replace(/\D/g,'');
+            const be=String(b.customerEmail||'').trim().toLowerCase();
+            const ce=String(current.email||'').trim().toLowerCase();
+            return !((bp&&cp&&bp===cp)||(be&&ce&&be===ce));
+          });
+          localStorage.setItem('griahsathi-bookings',JSON.stringify(bookings));
+        }
+
+        /* Remove only this customer's complaints. */
+        let complaints=[];
+        try{complaints=JSON.parse(localStorage.getItem('griahsathi-complaints')||'[]')}catch(e){complaints=[]}
+        if(Array.isArray(complaints)){
+          complaints=complaints.filter(c=>{
+            if(c.customerId && current.id) return String(c.customerId)!==String(current.id);
+            const ce=String(c.customerEmail||'').trim().toLowerCase();
+            const pe=String(c.customerPhone||'').replace(/\D/g,'');
+            const ee=String(current.email||'').trim().toLowerCase();
+            const pp=String(current.phone||'').replace(/\D/g,'');
+            return !((ce&&ee&&ce===ee)||(pe&&pp&&pe===pp));
+          });
+          localStorage.setItem('griahsathi-complaints',JSON.stringify(complaints));
+        }
+
+        /* Remove this customer's reviews from worker profiles. */
+        let workers=[];
+        try{workers=JSON.parse(localStorage.getItem('griahsathi-workers')||'[]')}catch(e){workers=[]}
+        if(Array.isArray(workers)){
+          const cleaned=workers.map(worker=>{
+            const updated={...worker};
+            if(Array.isArray(updated.reviews)){
+              updated.reviews=updated.reviews.filter(r=>{
+                if(r.customerId && current.id) return String(r.customerId)!==String(current.id);
+                const re=String(r.customerEmail||'').trim().toLowerCase();
+                const rp=String(r.customerPhone||'').replace(/\D/g,'');
+                const ce=String(current.email||'').trim().toLowerCase();
+                const cp=String(current.phone||'').replace(/\D/g,'');
+                return !((re&&ce&&re===ce)||(rp&&cp&&rp===cp));
+              });
+            }
+            /* Recalculate worker ratings after removing this customer's reviews. */
+            if(Array.isArray(updated.reviews)){
+              const valid=updated.reviews.filter(r=>Number(r.rating)>0);
+              updated.totalRatings=valid.length;
+              updated.ratingAverage=valid.length
+                ? valid.reduce((sum,r)=>sum+Number(r.rating||0),0)/valid.length
+                : 0;
+            }
+            return updated;
+          });
+          localStorage.setItem('griahsathi-workers',JSON.stringify(cleaned));
+        }
+
+        /* Clear this customer's active session and legacy session only. */
+        localStorage.removeItem(CURRENT_KEY);
+        localStorage.removeItem('griahsathi-logged-in');
+        localStorage.removeItem('griahsathi-customer');
+
+        alert('Your Griahsathi customer account has been deleted successfully.');
+        location.href='index.html';
+
+      }catch(error){
+        console.error('Customer account deletion failed:',error);
+        showDeleteMsg('Something went wrong while deleting the account. Please try again.');
+      }
+    }
+
+
+    function start(){
+      const customer=getCustomer();
+      if(!customer){
+        alert('Please login to access your customer profile.');
+        location.href='login.html?redirect='+encodeURIComponent('customer-profile.html');
+        return;
+      }
+      fill(customer);setEditing(false);renderBookings(customer);renderReviews(customer);initProfilePhoto();initComplaints(customer);
+
+      document.getElementById('editBtn').onclick=()=>setEditing(true);
+      document.getElementById('cancelBtn').onclick=()=>{fill(getCustomer());setEditing(false)};
+      document.getElementById('profileForm').onsubmit=e=>{
+        e.preventDefault();
+        const updated={
+          ...getCustomer(),
+          name:document.getElementById('name').value.trim(),
+          phone:document.getElementById('phone').value.trim(),
+          city:document.getElementById('city').value.trim(),
+          district:document.getElementById('district').value.trim(),
+          state:document.getElementById('state').value.trim(),
+          pincode:document.getElementById('pincode').value.trim(),
+          address:document.getElementById('address').value.trim(),
+          updatedAt:new Date().toISOString()
+        };
+        const saved=saveCustomer(updated);
+        fill(saved);setEditing(false);
+        const msg=document.getElementById('success');msg.style.display='block';setTimeout(()=>msg.style.display='none',2500);
+      };
+      document.getElementById('logoutBtn').onclick=()=>{
+        if(!confirm('Are you sure you want to logout?')) return;
+        if(window.GS&&typeof GS.logoutCustomer==='function') GS.logoutCustomer();
+        else {localStorage.removeItem(CURRENT_KEY);localStorage.removeItem('griahsathi-logged-in');}
+        location.href='login.html';
+      };
+
+      document.getElementById('deleteAccountBtn').onclick=()=>{
+        const panel=document.getElementById('deleteAccountPanel');
+        const input=document.getElementById('deletePassword');
+        const msg=document.getElementById('deleteAccountMsg');
+        panel.style.display=panel.style.display==='none'?'block':'none';
+        if(panel.style.display==='block'){
+          msg.style.display='none';
+          input.value='';
+          input.focus();
+        }
+      };
+
+      document.getElementById('cancelDeleteAccount').onclick=()=>{
+        document.getElementById('deleteAccountPanel').style.display='none';
+        document.getElementById('deletePassword').value='';
+        document.getElementById('deleteAccountMsg').style.display='none';
+      };
+
+      document.getElementById('confirmDeleteAccount').onclick=deleteCustomerAccount;
+
+      document.getElementById('deletePassword').addEventListener('keydown',event=>{
+        if(event.key==='Enter'){
+          event.preventDefault();
+          deleteCustomerAccount();
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded',start);
+
+    // Keep the profile review section synchronized when a booking review is
+    // submitted from booking.html or another browser tab.
+    window.addEventListener('storage',event=>{
+      if(['griahsathi-bookings','griahsathi-workers','griahsathi-reviews','griahsathi-current-customer','griahsathi-complaints'].includes(event.key)){
+        const customer=getCustomer();
+        if(customer){ renderReviews(customer); renderComplaintBookingOptions(customer); renderComplaints(customer); }
+      }
+    });
+
+    // Do NOT continuously rerender the profile/complaint form.
+    // A timer would rebuild the form while the customer is typing and can
+    // clear their complaint data before submission. Updates are handled by
+    // explicit actions and the storage event below instead.
+  </script>
+</body>
+</html>

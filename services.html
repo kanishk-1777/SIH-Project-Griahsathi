@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Services | Griahsathi</title>
+
+    <link rel="stylesheet" href="./output.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =========================
+           SERVICE CARD ANIMATION
+        ========================== */
+
+        .service-card {
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                background-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(74, 222, 128, 0.35);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .service-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.12) rotate(3deg);
+        }
+
+
+        /* =========================
+           LIGHT MODE
+        ========================== */
+
+        body.light-mode {
+            background: #f5f7f6 !important;
+            color: #111827 !important;
+        }
+
+        body.light-mode header {
+            background: rgba(255, 255, 255, 0.90) !important;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+
+        body.light-mode .dark-card {
+            background: rgba(255, 255, 255, 0.75) !important;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+
+        body.light-mode .light-text {
+            color: #111827 !important;
+        }
+
+        body.light-mode .gray-text {
+            color: #6b7280 !important;
+        }
+
+        body.light-mode #mobileMenu {
+            background: #ffffff !important;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+        }
+
+        body.light-mode .mobile-link {
+            color: #374151 !important;
+        }
+
+    </style>
+
+    <!-- Shared navbar: edit navbar.js to change the header on every page at once -->
+    <script src="./navbar.js" defer></script>
+</head>
+
+
+<body class="bg-[#080B10] text-white antialiased">
+
+
+<!-- Navbar is injected here by navbar.js -->
+<div id="site-header"></div>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="pt-24">
+
+
+<!-- =========================================================
+     PAGE HERO
+========================================================= -->
+
+<section class="relative overflow-hidden py-20">
+
+    <!-- Glow -->
+
+    <div
+        class="absolute -left-32 top-10 h-80 w-80 rounded-full bg-green-500/10 blur-3xl"
+    ></div>
+
+    <div
+        class="absolute -right-32 top-20 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl"
+    ></div>
+
+
+    <div
+        class="relative mx-auto max-w-7xl px-5 text-center lg:px-8"
+    >
+
+        <p
+            class="text-5xl font-semibold uppercase tracking-widest text-green-400"
+             style="font-family: 'Pacifico', cursive;"
+        >
+             We Offer
+        </p>
+
+
+        <h1
+            class="mx-auto mt-4 max-w-4xl text-5xl leading-tight tracking-tight sm:text-6xl lg:text-7xl"
+            style="font-family: 'Pacifico', cursive;"
+        >
+
+            Services for
+            <span class="text-green-400">
+                Every Need.
+            </span>
+
+        </h1>
+
+
+        <p
+            class="mx-auto mt-7 max-w-2xl text-lg leading-8 text-gray-400"
+        >
+            From everyday household help to skilled technical work
+            and large team-based tasks, find the right help through
+            Griahsathi.
+        </p>
+
+
+       
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     MADAD SATHI
+========================================================= -->
+
+<section
+    id="madad-sathi"
+    class="border-t border-white/5 py-24"
+>
+
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+
+
+        <!-- SECTION HEADING -->
+
+        <div class="mb-12">
+
+            <p
+                class="text-5xl font-semibold uppercase tracking-widest text-green-400"
+                 style="font-family: 'Pacifico', cursive;"
+            >
+                🧹 Madad Sathi
+            </p>
+
+            <h2
+                class="mt-3 text-2xl font-bold underline decoration-green-400/60 underline-offset-8 sm:text-3xl"
+               
+            >
+                Everyday Help
+            </h2>
+
+            <p class="mt-5 max-w-2xl text-gray-400">
+                Simple everyday assistance for homes, workplaces,
+                outdoor spaces and general tasks.
+            </p>
+
+        </div>
+
+
+        <!-- SERVICE GRID -->
+
+        <div
+            id="madadGrid"
+            class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+        >
+
+
+            <!-- Home Cleaning -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="home cleaning"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🧹
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Home Cleaning
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Everyday cleaning assistance for your home.
+                </p>
+
+            </a>
+
+
+            <!-- Office Cleaning -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="office cleaning"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏢
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Office Cleaning
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Keep your workspace clean and organized.
+                </p>
+
+            </a>
+
+
+            <!-- Dishwashing -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="dishwashing"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🍽️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Dishwashing
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Get help with everyday dishwashing tasks.
+                </p>
+
+            </a>
+
+
+            <!-- Laundry -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="laundry assistance"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    👕
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Laundry Assistance
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Assistance with washing, drying and folding.
+                </p>
+
+            </a>
+
+
+            <!-- Gardening -->
+
+           <a
+  href="find-worker.html?service=gardening-and-lawn-maintenance"
+  class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+  data-service="gardening-and-lawn-maintenance"
+>
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🌿
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Gardening
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Garden, plants and lawn maintenance assistance.
+                </p>
+
+            </a>
+
+
+            <!-- House Help -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="house help"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏠
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    House Help
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    General assistance with everyday household tasks.
+                </p>
+
+            </a>
+
+
+            <!-- Car Washing -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="car bike washing"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🚗
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Car & Bike Washing
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Convenient vehicle washing assistance.
+                </p>
+
+            </a>
+
+
+            <!-- Construction Helper -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="construction helper"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    👷
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Construction Helper
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    General assistance at construction sites.
+                </p>
+
+            </a>
+
+
+            <!-- Material Handling -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="material handling"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    📦
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Material Handling
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Help with handling and organizing materials.
+                </p>
+
+            </a>
+
+
+            <!-- Farm Helper -->
+
+            <a
+                href="find-worker.html"
+                class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+                data-service="farm agriculture helper"
+            >
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🌾
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Farm Helper
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Assistance with everyday agricultural tasks.
+                </p>
+
+            </a>
+
+
+            <!-- Loading -->
+
+           <a
+  href="find-worker.html?service=loading-and-unloading"
+  class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+  data-service="loading-and-unloading"
+>
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    📦
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Loading & Unloading
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Assistance with loading and unloading goods.
+                </p>
+
+            </a>
+
+
+            <!-- Packing -->
+
+          <a
+  href="find-worker.html?service=packing-and-unpacking"
+  class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+  data-service="packing-and-unpacking"
+>
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    📦
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Packing & Unpacking
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Help with packing and unpacking belongings.
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     HUNAR SATHI
+========================================================= -->
+
+<section
+    id="hunar-sathi"
+    class="border-t border-white/5 py-24"
+>
+
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+
+
+        <div class="mb-12">
+
+            <p
+                class="text-5xl font-semibold uppercase tracking-widest text-green-400"
+                 style="font-family: 'Pacifico', cursive;"
+            >
+                🔧 Hunar Sathi
+            </p>
+
+            <h2
+                class="mt-3 text-2xl font-bold underline decoration-green-400/60 underline-offset-8 sm:text-3xl"
+               
+            >
+                Skilled Hands & Technical Work
+            </h2>
+
+            <p class="mt-5 max-w-2xl text-gray-400">
+                Practical skills, technical knowledge and experienced
+                professionals for your repair and maintenance needs.
+            </p>
+
+        </div>
+
+
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+
+            <!-- Plumbing -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="plumbing">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🔧
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Plumbing
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Pipes, taps, leaks and plumbing repairs.
+                </p>
+
+            </a>
+
+
+            <!-- Electrical -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="electrical repair">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    ⚡
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Electrical Repair
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Electrical installation, maintenance and repair.
+                </p>
+
+            </a>
+
+
+            <!-- Carpentry -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="carpentry">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🪚
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Carpentry
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Furniture, fittings and woodwork.
+                </p>
+
+            </a>
+
+
+            <!-- Painting -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="painting">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🎨
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Painting
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Interior, exterior and decorative painting.
+                </p>
+
+            </a>
+
+
+            <!-- Masonry -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="masonry">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🧱
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Masonry
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Brickwork, concrete and masonry tasks.
+                </p>
+
+            </a>
+
+
+            <!-- Tile -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="tile work">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🧱
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Tile Work
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Floor and wall tile installation and repair.
+                </p>
+
+            </a>
+
+
+            <!-- Welding -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="welding">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🔥
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Welding
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Welding and metal joining work.
+                </p>
+
+            </a>
+
+
+            <!-- Furniture Repair -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="furniture repair">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🪑
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Furniture Repair
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Repair and restoration of furniture.
+                </p>
+
+            </a>
+
+
+            <!-- Appliance -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="appliance repair">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🔌
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Appliance Repair
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Repair and maintenance of household appliances.
+                </p>
+
+            </a>
+
+
+            <!-- AC -->
+
+           <a href="find-worker.html?service=ac-installation-and-maintenance" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="ac-installation-and-maintenance">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    ❄️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    AC Service
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    AC installation, servicing and maintenance.
+                </p>
+
+            </a>
+
+
+            <!-- RO -->
+
+            <a href="find-worker.html?service=ro-water-purifier-service" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="ro-water-purifier-service">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    💧
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    RO / Water Purifier
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Installation, servicing and maintenance.
+                </p>
+
+            </a>
+
+
+            <!-- CCTV -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="cctv installation">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    📹
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    CCTV Installation
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    CCTV installation and setup assistance.
+                </p>
+
+            </a>
+
+
+            <!-- POP -->
+
+            <a href="find-worker.html?service=pop-and-false-ceiling-work" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="pop-and-false-ceiling-work">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏠
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    POP & False Ceiling
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    POP, ceiling installation and finishing work.
+                </p>
+
+            </a>
+
+
+            <!-- Glass -->
+
+           <a href="find-worker.html?service=glass-and-aluminium-work" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="glass-and-aluminium-work">
+
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🪟
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Glass & Aluminium
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Glass fitting and aluminium work.
+                </p>
+
+            </a>
+
+
+            <!-- Modular Kitchen -->
+
+            <a href="find-worker.html?service=modular-kitchen-installation" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="modular-kitchen-installation">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🍳
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Modular Kitchen
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Modular kitchen installation and fitting.
+                </p>
+
+            </a>
+
+
+            <!-- Pest -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="pest control">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🐜
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Pest Control
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Pest management and treatment services.
+                </p>
+
+            </a>
+
+
+            <!-- Solar -->
+
+            <a href="find-worker.html?service=solar-panel-installation-and-maintenance" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="solar-panel-installation-and-maintenance">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    ☀️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Solar Panel Service
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Solar installation and maintenance assistance.
+                </p>
+
+            </a>
+
+
+            <!-- Motor -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="motor pump repair">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    💧
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Motor & Pump Repair
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Motor, pump and water-system repairs.
+                </p>
+
+            </a>
+
+
+            <!-- Automobile -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="bike automobile mechanic">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏍️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Bike / Auto Mechanic
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Vehicle repair and maintenance.
+                </p>
+
+            </a>
+
+
+            <!-- Fabrication -->
+
+         <a href="find-worker.html?service=fabrication-work" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="fabrication-work">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    ⚙️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Fabrication Work
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Custom metal fabrication and fitting work.
+                </p>
+
+            </a>
+
+
+            <!-- Furniture Installation -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="furniture installation">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🪵
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Furniture Installation
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Furniture assembly and installation.
+                </p>
+
+            </a>
+
+
+            <!-- Door -->
+
+           <a href="find-worker.html?service=door-and-window-repair" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="door-and-window-repair">
+
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🚪
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Door & Window Repair
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Repairs, fittings and adjustments.
+                </p>
+
+            </a>
+
+
+            <!-- Lock -->
+
+          <a
+  href="find-worker.html?service=lock-and-key-services"
+  class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+  data-service="lock-and-key-services"
+>
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🔑
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Lock & Key Services
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Lock installation, repair and key services.
+                </p>
+
+            </a>
+
+
+            <!-- Waterproofing -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="waterproofing">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏠
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Waterproofing
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Protection against leaks and water damage.
+                </p>
+
+            </a>
+
+
+            <!-- Roofing -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="roofing repair">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏗️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Roofing Repair
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Roof repair and maintenance assistance.
+                </p>
+
+            </a>
+
+
+            <!-- Home Repair -->
+
+          <a
+  href="find-worker.html?service=home-repair-and-maintenance"
+  class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+  data-service="home-repair-and-maintenance"
+>
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🔨
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Home Repair & Maintenance
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    General repair and maintenance work.
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     TEAM SATHI
+========================================================= -->
+
+<section
+    id="team-sathi"
+    class="border-t border-white/5 py-24"
+>
+
+    <div class="mx-auto max-w-7xl px-5 lg:px-8">
+
+
+        <div class="mb-12">
+
+            <p
+                class="text-5xl font-semibold uppercase tracking-widest text-green-400"
+                 style="font-family: 'Pacifico', cursive;"
+            >
+                👥 Team Sathi
+            </p>
+
+            <h2
+                class="mt-3 text-3xl font-bold underline decoration-green-400/60 underline-offset-8 sm:text-3xl"
+               
+            >
+                More Hands. Bigger Tasks.
+            </h2>
+
+            <p class="mt-5 max-w-2xl text-gray-400">
+                Need multiple workers for a large, urgent or
+                time-sensitive task? Team Sathi brings workers together.
+            </p>
+
+        </div>
+
+
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+
+            <!-- Moving -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="house shifting">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏠
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    House Shifting
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    A complete team for moving your household.
+                </p>
+
+            </a>
+
+
+            <!-- Furniture Moving -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="furniture moving">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🚚
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Furniture Moving
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple workers for heavy furniture movement.
+                </p>
+
+            </a>
+
+
+            <!-- Office Relocation -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="office relocation">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏢
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Office Relocation
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team assistance for moving an entire office.
+                </p>
+
+            </a>
+
+
+            <!-- Packing Team -->
+
+            <a
+  href="find-worker.html?service=packing-and-unpacking-team"
+  class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+  data-service="packing-and-unpacking-team"
+>
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    📦
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Packing Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple workers for bulk packing jobs.
+                </p>
+
+            </a>
+
+
+            <!-- Loading Team -->
+
+           <a
+  href="find-worker.html?service=loading-and-unloading-team"
+  class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6"
+  data-service="loading-and-unloading-team"
+>
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    📦
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Loading & Unloading Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    A team for bulk loading and unloading.
+                </p>
+
+            </a>
+
+
+            <!-- Construction Team -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="construction labour team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏗️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Construction Labour Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple workers for construction projects.
+                </p>
+
+            </a>
+
+
+            <!-- Masonry Team -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="masonry team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🧱
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Masonry Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Skilled workers for larger masonry projects.
+                </p>
+
+            </a>
+
+
+            <!-- Painting Team -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="painting team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🎨
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Painting Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple painters for larger properties.
+                </p>
+
+            </a>
+
+
+            <!-- Tile Team -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="tile work team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🧱
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Tile Work Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team-based tile installation for larger spaces.
+                </p>
+
+            </a>
+
+
+            <!-- Demolition -->
+
+            <a href="find-worker.html?service=demolition-and-debris-removal" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="demolition-and-debris-removal">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏚️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Demolition & Debris Removal
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team assistance for demolition and cleanup.
+                </p>
+
+            </a>
+
+
+            <!-- Event Setup -->
+
+            <a href="find-worker.html?service=event-setup-and-cleanup" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="event-setup-and-cleanup">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🎪
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Event Setup & Cleanup
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Complete team support before and after events.
+                </p>
+
+            </a>
+
+
+            <!-- Wedding Setup -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="wedding setup">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    💍
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Wedding Setup
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Workers for wedding preparation and setup.
+                </p>
+
+            </a>
+
+
+            <!-- Tent -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="tent pandal setup">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    ⛺
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Tent / Pandal Setup
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team assistance for temporary structures.
+                </p>
+
+            </a>
+
+
+            <!-- Stage -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="stage setup">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🎤
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Stage Setup
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Workers for stage installation and preparation.
+                </p>
+
+            </a>
+
+
+            <!-- Catering -->
+
+            <a href="find-worker.html?service=catering-support-staff" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="catering-support-staff">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🍽️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Catering Support Staff
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Additional workers for event catering support.
+                </p>
+
+            </a>
+
+
+            <!-- Farm -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="farm labour team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🌾
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Farm Labour Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple workers for agricultural tasks.
+                </p>
+
+            </a>
+
+
+            <!-- Harvesting -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="harvesting team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🌾
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Harvesting Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team support during harvesting work.
+                </p>
+
+            </a>
+
+
+            <!-- Plantation -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="plantation team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🌱
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Plantation Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Workers for plantation and outdoor tasks.
+                </p>
+
+            </a>
+
+
+            <!-- Landscaping -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="landscaping team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🌳
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Landscaping Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team assistance for landscaping projects.
+                </p>
+
+            </a>
+
+
+            <!-- Warehouse -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="warehouse labour">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏭
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Warehouse Labour
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Workers for warehouse and logistics tasks.
+                </p>
+
+            </a>
+
+
+            <!-- Bulk Material -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="bulk material handling">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    📦
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Bulk Material Handling
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple workers for large material movement.
+                </p>
+
+            </a>
+
+
+            <!-- Shop Setup -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="shop setup">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏪
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Shop Setup
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team assistance for shop setup and arrangement.
+                </p>
+
+            </a>
+
+
+            <!-- Office Setup -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="office setup">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏢
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Office Setup
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple workers for office setup.
+                </p>
+
+            </a>
+
+
+            <!-- Large Cleaning -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="large property cleaning commercial cleaning">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🧹
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Large-Scale Cleaning
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Teams for large homes, offices and properties.
+                </p>
+
+            </a>
+
+
+            <!-- Furniture Team -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="furniture installation team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🪑
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Furniture Installation Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Multiple workers for bulk furniture installation.
+                </p>
+
+            </a>
+
+
+            <!-- Debris -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="debris removal team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🗑️
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Debris Removal Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Team assistance for clearing construction debris.
+                </p>
+
+            </a>
+
+
+            <!-- Property Cleanup -->
+
+            <a href="find-worker.html" class="service-card service-item dark-card rounded-2xl border border-white/10 bg-white/[0.03] p-6" data-service="property cleanup team">
+
+                <div class="service-icon flex h-14 w-14 items-center justify-center rounded-2xl bg-green-400/10 text-2xl">
+                    🏡
+                </div>
+
+                <h3 class="light-text mt-6 text-lg font-bold">
+                    Property Cleanup Team
+                </h3>
+
+                <p class="gray-text mt-2 text-sm leading-6 text-gray-500">
+                    Complete team for large property cleanup.
+                </p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     FINAL CTA
+========================================================= -->
+
+<section class="border-t border-white/5 py-24">
+
+    <div class="mx-auto max-w-4xl px-5 text-center">
+
+        <h2
+            class="text-4xl font-extrabold tracking-tight sm:text-5xl"
+        >
+            Can't find what you need?
+        </h2>
+
+        <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-gray-400">
+            Tell us what job you need help with and we'll help you
+            find the right person.
+        </p>
+
+        <a
+            href="find-worker.html"
+            class="mt-8 inline-flex rounded-xl bg-green-500 px-7 py-4 font-bold text-black transition duration-300 hover:-translate-y-1 hover:bg-green-400 hover:shadow-xl hover:shadow-green-500/20"
+        >
+            Find a Worker →
+        </a>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="border-t border-white/10">
+
+    <div
+        class="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-8"
+    >
+
+        <!-- Brand -->
+
+        <div>
+
+            <div class="flex items-center gap-3">
+
+                <div
+                    class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-400/10 text-green-400"
+                >
+                    G
+                </div>
+
+                <span class="text-xl font-bold">
+                    Griahsathi
+                </span>
+
+            </div>
+
+            <p class="mt-5 max-w-xs text-sm leading-6 text-gray-500">
+                Connecting people with reliable help for everyday jobs.
+            </p>
+
+        </div>
+
+
+        <!-- Platform -->
+
+        <div>
+
+            <h3 class="font-semibold">
+                Platform
+            </h3>
+
+            <div class="mt-5 flex flex-col gap-3 text-sm text-gray-500">
+
+                <a
+                    href="services.html"
+                    class="transition hover:text-green-400"
+                >
+                    Services
+                </a>
+
+                <a
+                    href="find-worker.html"
+                    class="transition hover:text-green-400"
+                >
+                    Find a Worker
+                </a>
+
+                <a
+                    href="worker-auth.html"
+                    class="transition hover:text-green-400"
+                >
+                    Become a Griah Sathi
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Company -->
+
+        <div>
+
+            <h3 class="font-semibold">
+                Company
+            </h3>
+
+            <div class="mt-5 flex flex-col gap-3 text-sm text-gray-500">
+
+                <a
+                    href="about.html"
+                    class="transition hover:text-green-400"
+                >
+                    About Us
+                </a>
+
+                <a
+                    href="contact.html"
+                    class="transition hover:text-green-400"
+                >
+                    Contact
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Contact -->
+
+        <div>
+                <h3 class="font-semibold">Founders</h3>
+                <div class="mt-5 grid grid-cols-2 gap-x-5 gap-y-2 text-sm text-gray-500">
+                    <span>Parth Sharma</span><span>Akshit Kaushal</span><span>Anshika Sain</span><span>Kanishk Upadhaya</span><span>Shraddha Sharma</span><span>Deepank Thakur</span>
+                </div>
+            </div>
+
+        </div>
+
+
+    <div class="border-t border-white/5">
+
+        <div
+            class="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-6 text-sm text-gray-600 sm:flex-row sm:items-center sm:justify-between lg:px-8"
+        >
+
+            <p>
+                © 2026 Griahsathi. All rights reserved.
+            </p>
+
+            <p>
+                Skilled Hands. Trusted Help.
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================
+       MOBILE MENU
+    ========================== */
+
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuButton.addEventListener("click", () => {
+
+        mobileMenu.classList.toggle("hidden");
+
+    });
+
+
+
+    /* =========================
+       DARK / LIGHT MODE
+    ========================== */
+
+    const themeToggle = document.getElementById("themeToggle");
+    const mobileThemeToggle =
+        document.getElementById("mobileThemeToggle");
+
+
+    function updateThemeButton() {
+
+        const isLight =
+            document.body.classList.contains("light-mode");
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                isLight ? "🌙" : "☀️";
+
+        }
+
+        if (mobileThemeToggle) {
+
+            mobileThemeToggle.textContent =
+                isLight
+                    ? "🌙 Dark Mode"
+                    : "☀️ Light Mode";
+
+        }
+
+    }
+
+
+    function toggleTheme() {
+
+        document.body.classList.toggle("light-mode");
+
+        const isLight =
+            document.body.classList.contains("light-mode");
+
+        localStorage.setItem(
+            "griahsathi-theme",
+            isLight ? "light" : "dark"
+        );
+
+        updateThemeButton();
+
+    }
+
+
+    if (themeToggle) {
+
+        themeToggle.addEventListener(
+            "click",
+            toggleTheme
+        );
+
+    }
+
+
+    if (mobileThemeToggle) {
+
+        mobileThemeToggle.addEventListener(
+            "click",
+            toggleTheme
+        );
+
+    }
+
+
+    /* LOAD SAVED THEME */
+
+    if (
+        localStorage.getItem("griahsathi-theme")
+        === "light"
+    ) {
+
+        document.body.classList.add("light-mode");
+
+    }
+
+    updateThemeButton();
+
+
+
+    /* =========================
+   SERVICE SEARCH + SERVICE LINK
+========================= */
+
+const searchInput =
+    document.getElementById("serviceSearch");
+
+const serviceItems =
+    document.querySelectorAll(".service-item");
+
+
+/* =========================
+   ADD CORRECT SERVICE TO URL
+========================= */
+
+serviceItems.forEach(item => {
+
+    item.addEventListener("click", function (event) {
+
+        const service =
+            this.dataset.service;
+
+        if (!service) {
+            return;
+        }
+
+        const serviceSlug =
+            service
+                .toLowerCase()
+                .trim()
+                .replace(/&/g, "and")
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "");
+
+        this.href =
+            `find-worker.html?service=${encodeURIComponent(serviceSlug)}`;
+
+    });
+
+});
+
+
+/* =========================
+   SERVICE SEARCH
+========================= */
+
+if (searchInput) {
+
+    searchInput.addEventListener("input", function () {
+
+        const search =
+            this.value.toLowerCase().trim();
+
+
+        serviceItems.forEach(item => {
+
+            const serviceName =
+                item.dataset.service.toLowerCase();
+
+            if (serviceName.includes(search)) {
+
+                item.style.display = "";
+
+            } else {
+
+                item.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+}
+</script>
+
+<script>
+  document.querySelectorAll(".service-item").forEach((card) => {
+    const serviceName = card.dataset.service;
+
+    if (!serviceName) return;
+
+    const slug = serviceName
+      .toLowerCase()
+      .trim()
+      .replace(/&/g, "and")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    card.href = `find-worker.html?service=${encodeURIComponent(slug)}`;
+  });
+</script>
+<script src="auth.js"></script>
+<script src="./griahsathi-core.js"></script>
+<script src="./griahsathi-language.js"></script>
+<script src="./griahsathi-ai.js"></script>
+</body>
+</html>

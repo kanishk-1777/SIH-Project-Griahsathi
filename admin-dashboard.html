@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Dashboard | Griahsathi</title>
+<link rel="stylesheet" href="./output.css">
+<script src="./griahsathi-core.js"></script>
+<style>
+body{background:#080B10;color:#fff}
+.light-mode{background:#f5f7f6!important;color:#111827!important}
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1)}
+.light-mode .card{background:#fff;border-color:rgba(0,0,0,.08)}
+.light-mode input,.light-mode select,.light-mode textarea{background:#fff!important;color:#111827!important}
+.light-mode .text-gray-400{color:#6b7280!important}
+.complaint-status-pending{background:rgba(250,204,21,.10);color:#fde047}
+.complaint-status-review{background:rgba(96,165,250,.10);color:#93c5fd}
+.complaint-status-resolved{background:rgba(74,222,128,.10);color:#86efac}
+.complaint-status-rejected{background:rgba(248,113,113,.10);color:#fca5a5}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="px-5 pb-16 pt-28">
+<div class="mx-auto max-w-7xl">
+
+<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+  <div>
+    <p class="text-sm font-semibold uppercase tracking-[.2em] text-green-400">Admin Dashboard</p>
+    <h1 class="mt-2 text-4xl font-bold">Platform Management</h1>
+  </div>
+  <button id="logout" class="rounded-xl border border-red-400/30 px-4 py-3 text-red-300">Logout</button>
+</div>
+
+<!-- STATS -->
+<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+  <div class="card rounded-2xl p-6"><p class="text-sm text-gray-400">Workers</p><p id="wCount" class="mt-2 text-3xl font-bold">0</p></div>
+  <div class="card rounded-2xl p-6"><p class="text-sm text-gray-400">Pending Contractors</p><p id="cCount" class="mt-2 text-3xl font-bold">0</p></div>
+  <div class="card rounded-2xl p-6"><p class="text-sm text-gray-400">Pending Certificates</p><p id="certCount" class="mt-2 text-3xl font-bold">0</p></div>
+  <div class="card rounded-2xl p-6"><p class="text-sm text-gray-400">Open Complaints</p><p id="complaintCount" class="mt-2 text-3xl font-bold">0</p></div>
+  <div class="card rounded-2xl p-6"><p class="text-sm text-gray-400">Bookings</p><p id="bCount" class="mt-2 text-3xl font-bold">0</p></div>
+</div>
+
+<!-- WORKERS + CERTIFICATES -->
+<div class="mt-8 grid gap-8 lg:grid-cols-2">
+
+<section class="card rounded-3xl p-6">
+  <div class="flex items-center justify-between gap-3">
+    <h2 class="text-2xl font-bold">Worker Management</h2>
+    <span class="text-xs text-gray-500">Verify, message or delete</span>
+  </div>
+  <div id="workerList" class="mt-5 space-y-4"></div>
+</section>
+
+<section class="card rounded-3xl p-6">
+  <h2 class="text-2xl font-bold">Certificate Requests</h2>
+  <div id="certificateList" class="mt-5 space-y-4"></div>
+</section>
+
+</div>
+
+<!-- ADMIN MESSAGES -->
+<section class="card mt-8 rounded-3xl p-6">
+  <h2 class="text-2xl font-bold">Admin → Worker Messages</h2>
+  <div class="mt-5 grid gap-3 md:grid-cols-[.8fr_1fr_1.5fr_auto]">
+    <select id="messageWorker" class="rounded-xl border border-white/10 bg-[#11161d] px-4 py-3"></select>
+    <input id="messageTitle" placeholder="Message title" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3">
+    <textarea id="messageText" rows="2" placeholder="Write message to worker..." class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3"></textarea>
+    <button id="sendMessage" class="rounded-xl bg-green-500 px-5 py-3 font-bold text-black">Send</button>
+  </div>
+  <p id="messageMsg" class="mt-3 hidden rounded-xl px-4 py-3 text-sm"></p>
+</section>
+
+<!-- COMPLAINTS -->
+<section class="card mt-8 rounded-3xl p-6">
+
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h2 class="text-2xl font-bold">Complaints &amp; Issue Resolution</h2>
+      <p class="mt-1 text-sm text-gray-400">Each complaint belongs to one customer. Admin can view and resolve complaints, while customers can only see their own complaints.</p>
+    </div>
+
+    <button id="refreshComplaints" class="rounded-xl border border-green-400/30 px-4 py-2.5 text-sm font-semibold text-green-300">
+      ↻ Refresh Complaints
+    </button>
+  </div>
+
+  <div id="complaintNotice" class="mt-4 hidden rounded-xl px-4 py-3 text-sm"></div>
+  <div id="complaintList" class="mt-5 space-y-4"></div>
+
+</section>
+
+<!-- BOOKINGS -->
+<section class="card mt-8 rounded-3xl p-6">
+  <h2 class="text-2xl font-bold">Bookings</h2>
+  <div id="bookingList" class="mt-5 space-y-4"></div>
+</section>
+
+</div>
+</main>
+
+<script>
+/* =========================
+   NAVIGATION / AUTH
+========================= */
+
+document.getElementById("site-header").innerHTML=GS.nav();
+GS.bindNav();
+
+if(localStorage.getItem(GS.keys.adminSession)!=="yes"){
+  location.href="admin-login.html";
+  throw new Error("admin");
+}
+
+/* =========================
+   ELEMENT REFERENCES
+========================= */
+
+const $=id=>document.getElementById(id);
+
+const els={
+  wCount:$('wCount'),
+  cCount:$('cCount'),
+  certCount:$('certCount'),
+  complaintCount:$('complaintCount'),
+  bCount:$('bCount'),
+  workerList:$('workerList'),
+  certificateList:$('certificateList'),
+  messageWorker:$('messageWorker'),
+  messageTitle:$('messageTitle'),
+  messageText:$('messageText'),
+  sendMessage:$('sendMessage'),
+  messageMsg:$('messageMsg'),
+  complaintList:$('complaintList'),
+  complaintNotice:$('complaintNotice'),
+  refreshComplaints:$('refreshComplaints'),
+  bookingList:$('bookingList'),
+  logout:$('logout')
+};
+
+/* =========================
+   HELPERS
+========================= */
+
+function safeEscape(value){
+  return GS.escape(String(value ?? ""));
+}
+
+function complaintStatus(status){
+  const s=String(status||"pending").toLowerCase();
+  if(s==="under-review" || s==="under review" || s==="review") return "under-review";
+  if(s==="resolved") return "resolved";
+  if(s==="rejected") return "rejected";
+  return "pending";
+}
+
+function complaintStatusLabel(status){
+  const s=complaintStatus(status);
+  if(s==="under-review") return "Under Review";
+  if(s==="resolved") return "Resolved";
+  if(s==="rejected") return "Rejected";
+  return "Pending";
+}
+
+function complaintStatusClass(status){
+  const s=complaintStatus(status);
+  if(s==="under-review") return "complaint-status-review";
+  if(s==="resolved") return "complaint-status-resolved";
+  if(s==="rejected") return "complaint-status-rejected";
+  return "complaint-status-pending";
+}
+
+function showMessage(text,ok=true){
+  els.messageMsg.textContent=text;
+  els.messageMsg.className=`mt-3 rounded-xl px-4 py-3 text-sm ${ok?'bg-green-400/10 text-green-300':'bg-red-400/10 text-red-300'}`;
+}
+
+function showComplaintNotice(text,ok=true){
+  els.complaintNotice.textContent=text;
+  els.complaintNotice.className=`mt-4 rounded-xl px-4 py-3 text-sm ${ok?'bg-green-400/10 text-green-300':'bg-red-400/10 text-red-300'}`;
+}
+
+function getComplaints(){
+  const value=GS.complaints();
+  return Array.isArray(value)?value:[];
+}
+
+function getCustomers(){
+  try{
+    const customers=GS.get ? GS.get('griahsathi-customers',[]) : JSON.parse(localStorage.getItem('griahsathi-customers')||'[]');
+    return Array.isArray(customers)?customers:[];
+  }catch(e){return []}
+}
+
+function resolveComplaintCustomer(c){
+  const customers=getCustomers();
+  if(c.customerId){
+    const byId=customers.find(x=>String(x.id)===String(c.customerId));
+    if(byId) return byId;
+  }
+  const email=String(c.customerEmail||'').trim().toLowerCase();
+  if(email){
+    const byEmail=customers.find(x=>String(x.email||'').trim().toLowerCase()===email);
+    if(byEmail) return byEmail;
+  }
+  const phone=String(c.customerPhone||'').replace(/\D/g,'');
+  if(phone){
+    const byPhone=customers.find(x=>String(x.phone||'').replace(/\D/g,'')===phone);
+    if(byPhone) return byPhone;
+  }
+  return null;
+}
+
+/* =========================
+   STATS ONLY
+   Does NOT rerender complaint inputs.
+========================= */
+
+function renderStats(){
+  const ws=GS.workers();
+  const bs=GS.bookings();
+  const cs=getComplaints();
+
+  els.wCount.textContent=ws.length;
+  els.cCount.textContent=ws.filter(w=>w.contractorVerification==="pending").length;
+  els.certCount.textContent=ws.reduce((n,w)=>
+    n+(w.certifications||[]).filter(c=>
+      (c.status||(c.verified?'approved':'pending'))==='pending'
+    ).length,0
+  );
+
+  els.complaintCount.textContent=cs.filter(c=>
+    !['resolved','rejected'].includes(complaintStatus(c.status))
+  ).length;
+
+  els.bCount.textContent=bs.length;
+}
+
+/* =========================
+   WORKER LIST
+========================= */
+
+function renderWorkers(){
+  const ws=GS.workers();
+
+  els.messageWorker.innerHTML=ws.length
+    ?ws.map(w=>`
+      <option value="${safeEscape(w.id)}">
+        ${safeEscape(w.name)} (${safeEscape(w.id)})
+      </option>
+    `).join("")
+    :"<option value=\"\">No workers</option>";
+
+  els.workerList.innerHTML=ws.length
+    ?ws.map(w=>`
+      <div class="rounded-2xl border border-white/10 p-4">
+        <div class="flex flex-col gap-3">
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h3 class="font-bold">${safeEscape(w.name)}</h3>
+              ${GS.certified(w)?'<span class="rounded-full bg-green-400/10 px-2 py-1 text-[10px] font-semibold text-green-300">✓ Certified</span>':''}
+              <span class="text-xs text-gray-500">${safeEscape(w.id)}</span>
+            </div>
+            <p class="mt-1 text-sm text-gray-400">
+              ${safeEscape(w.city||"")}, ${safeEscape(w.state||"")} ·
+              ${w.workerType==="contractor"?"Contractor":"Worker"}
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            ${w.contractorVerification==="pending"?`
+              <button class="approveContractor rounded-xl bg-green-500 px-3 py-2 text-xs font-bold text-black" data-id="${safeEscape(w.id)}">Approve Contractor</button>
+              <button class="rejectContractor rounded-xl border border-red-400/30 px-3 py-2 text-xs text-red-300" data-id="${safeEscape(w.id)}">Reject Contractor</button>
+            `:""}
+
+            <button class="messageWorker rounded-xl border border-green-400/30 px-3 py-2 text-xs text-green-300" data-id="${safeEscape(w.id)}">Message</button>
+
+            <a class="rounded-xl border border-white/10 px-3 py-2 text-xs" href="worker-profile.html?id=${encodeURIComponent(w.id)}">View Profile</a>
+
+            <button class="deleteWorker rounded-xl bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-300" data-id="${safeEscape(w.id)}" data-name="${safeEscape(w.name)}">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    `).join("")
+    :'<p class="text-sm text-gray-400">No workers.</p>';
+}
+
+/* =========================
+   CERTIFICATES
+========================= */
+
+function renderCertificates(){
+  const ws=GS.workers();
+  const certs=[];
+
+  ws.forEach(w=>(w.certifications||[]).forEach(c=>certs.push({w,c})));
+
+  els.certificateList.innerHTML=certs.length
+    ?certs.slice().reverse().map(({w,c})=>{
+      const st=c.status||(c.verified?'approved':'pending');
+
+      return `
+        <div class="rounded-2xl border border-white/10 p-4">
+          <div class="flex flex-col gap-3">
+            <div>
+              <p class="font-bold">${safeEscape(c.name||"Certificate")}</p>
+              <p class="text-sm text-gray-400">
+                ${safeEscape(w.name)} · ${safeEscape(w.id)}
+              </p>
+              <p class="text-xs text-gray-500">
+                ${safeEscape(c.issuer||"Issuer not provided")}
+                ·
+                ${c.submittedAt?new Date(c.submittedAt).toLocaleString():""}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="rounded-full px-3 py-1 text-xs font-semibold ${st==='approved'?'bg-green-400/10 text-green-300':st==='rejected'?'bg-red-400/10 text-red-300':'bg-yellow-400/10 text-yellow-300'}">
+                ${st==='approved'?'✓ Approved':st==='rejected'?'✕ Rejected':'⏳ Pending'}
+              </span>
+
+              ${c.data?`
+                <a href="${c.data}" target="_blank" class="rounded-xl border border-white/10 px-3 py-2 text-xs text-green-300">
+                  View Certificate
+                </a>
+              `:""}
+
+              ${st==='pending'?`
+                <button class="approveCert rounded-xl bg-green-500 px-3 py-2 text-xs font-bold text-black" data-wid="${safeEscape(w.id)}" data-cid="${safeEscape(c.id)}">Approve</button>
+                <button class="rejectCert rounded-xl border border-red-400/30 px-3 py-2 text-xs text-red-300" data-wid="${safeEscape(w.id)}" data-cid="${safeEscape(c.id)}">Reject</button>
+              `:""}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("")
+    :'<p class="text-sm text-gray-400">No certificate requests.</p>';
+}
+
+/* =========================
+   COMPLAINT RENDER
+========================= */
+
+function renderComplaints(){
+  const ws=GS.workers();
+  const cs=getComplaints();
+
+  if(!cs.length){
+    els.complaintList.innerHTML='<p class="text-sm text-gray-400">No complaints registered.</p>';
+    renderStats();
+    return;
+  }
+
+  els.complaintList.innerHTML=cs.slice().reverse().map(c=>{
+    const w=ws.find(x=>x.id===c.workerId);
+    const st=complaintStatus(c.status);
+    const created=c.createdAt?new Date(c.createdAt):null;
+    const updated=c.updatedAt?new Date(c.updatedAt):null;
+
+    return `
+      <article class="rounded-2xl border border-white/10 p-5" data-complaint-card="${safeEscape(c.id)}">
+
+        <div class="flex flex-col gap-4">
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="font-bold">${safeEscape(c.subject||c.title||"Complaint")}</p>
+                <span class="rounded-full px-3 py-1 text-xs font-semibold ${complaintStatusClass(st)}">
+                  ${complaintStatusLabel(st)}
+                </span>
+              </div>
+
+              <p class="mt-1 text-xs text-gray-500">
+                Complaint ID: ${safeEscape(c.id)}
+              </p>
+
+              <p class="mt-2 text-sm text-gray-400">
+                Worker: ${safeEscape(w?.name||c.workerName||"Unknown")}
+                ·
+                Customer: ${safeEscape(c.customerName||resolveComplaintCustomer(c)?.name||"Customer")}
+              </p>
+              <p class="mt-1 text-xs text-gray-500">
+                Customer ID: ${safeEscape(c.customerId||resolveComplaintCustomer(c)?.id||"Legacy complaint")}
+                ${c.customerEmail?` · ${safeEscape(c.customerEmail)}`:""}
+              </p>
+
+              ${created?`<p class="mt-1 text-xs text-gray-500">Submitted: ${created.toLocaleString()}</p>`:""}
+              ${updated?`<p class="mt-1 text-xs text-gray-500">Last updated: ${updated.toLocaleString()}</p>`:""}
+            </div>
+          </div>
+
+          <div class="rounded-xl bg-white/[.025] p-4">
+            <p class="text-xs uppercase tracking-wider text-gray-500">Complaint</p>
+            <p class="mt-2 whitespace-pre-line text-sm leading-6 text-gray-200">
+              ${safeEscape(c.description||c.text||"No description provided")}
+            </p>
+          </div>
+          ${c.category?`<p class="text-xs text-gray-500">Category: ${safeEscape(c.category)}</p>`:""}
+          ${c.bookingId?`<p class="text-xs text-gray-500">Booking ID: ${safeEscape(c.bookingId)}</p>`:""}
+
+          ${c.bookingId?`
+            <p class="text-xs text-gray-500">
+              Booking ID: ${safeEscape(c.bookingId)}
+            </p>
+          `:""}
+
+          <div class="grid gap-3 lg:grid-cols-[200px_1fr_auto] lg:items-end">
+
+            <div>
+              <label class="mb-2 block text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Status
+              </label>
+              <select
+                class="complaintStatus w-full rounded-xl border border-white/10 bg-[#11161d] px-3 py-3 text-sm"
+                data-id="${safeEscape(c.id)}">
+                <option value="pending" ${st==='pending'?'selected':''}>Pending</option>
+                <option value="under-review" ${st==='under-review'?'selected':''}>Under Review</option>
+                <option value="resolved" ${st==='resolved'?'selected':''}>Resolved</option>
+                <option value="rejected" ${st==='rejected'?'selected':''}>Rejected</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Admin Response / Resolution
+              </label>
+              <textarea
+                class="complaintResponse w-full rounded-xl border border-white/10 bg-white/[.04] px-3 py-3 text-sm leading-6"
+                data-id="${safeEscape(c.id)}"
+                rows="3"
+                maxlength="2000"
+                placeholder="Write the response or explain how the issue was resolved...">${safeEscape(c.adminResponse||c.resolution||"")}</textarea>
+            </div>
+
+            <button
+              class="saveComplaint rounded-xl bg-green-500 px-5 py-3 text-sm font-bold text-black"
+              data-id="${safeEscape(c.id)}">
+              💾 Save Resolution
+            </button>
+
+          </div>
+
+          ${c.adminResponse?`
+            <div class="rounded-xl border border-green-400/15 bg-green-400/5 p-4">
+              <p class="text-xs uppercase tracking-wider text-green-400">Saved Admin Response</p>
+              <p class="mt-2 whitespace-pre-line text-sm leading-6 text-gray-300">${safeEscape(c.adminResponse)}</p>
+            </div>
+          `:""}
+
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  renderStats();
+}
+
+/* =========================
+   BOOKINGS
+========================= */
+
+function renderBookings(){
+  const ws=GS.workers();
+  const bs=GS.bookings();
+
+  els.bookingList.innerHTML=bs.length
+    ?bs.slice().reverse().map(b=>{
+      const w=ws.find(x=>x.id===b.workerId);
+
+      return `
+        <div class="rounded-2xl border border-white/10 p-4">
+          <div class="flex justify-between gap-3">
+            <div>
+              <p class="font-bold">
+                ${safeEscape(GS.service(b.service)?.title||b.service||"Service")}
+              </p>
+              <p class="text-sm text-gray-400">
+                ${safeEscape(b.customerName||"Customer")}
+                →
+                ${safeEscape(w?.name||"Unknown Worker")}
+              </p>
+            </div>
+
+            <span class="rounded-full bg-green-400/10 px-3 py-1 text-xs text-green-300">
+              ${safeEscape(b.status||"pending")}
+            </span>
+          </div>
+
+          <p class="mt-2 text-xs text-gray-500">
+            ${safeEscape(b.date||"")}
+            ${safeEscape(b.time||"")}
+            · ₹${Number(b.price||0)}
+          </p>
+        </div>
+      `;
+    }).join("")
+    :'<p class="text-sm text-gray-400">No bookings yet.</p>';
+}
+
+/* =========================
+   FULL RENDER
+========================= */
+
+function renderAll(){
+  renderStats();
+  renderWorkers();
+  renderCertificates();
+  renderComplaints();
+  renderBookings();
+}
+
+/* =========================
+   EVENT HANDLING
+========================= */
+
+/* Worker / certificate actions */
+
+document.addEventListener("click",event=>{
+  const button=event.target.closest("button");
+  if(!button)return;
+
+  if(button.classList.contains("approveContractor")){
+    const worker=GS.workers().find(x=>x.id===button.dataset.id);
+    if(!worker)return;
+
+    worker.contractorVerification="approved";
+    GS.saveWorker(worker);
+    GS.sendWorkerMessage(
+      worker.id,
+      "Contractor Verification Approved",
+      "Your contractor verification has been approved by Griahsathi Admin.",
+      "verification"
+    );
+
+    renderAll();
+    return;
+  }
+
+  if(button.classList.contains("rejectContractor")){
+    const worker=GS.workers().find(x=>x.id===button.dataset.id);
+    if(!worker)return;
+
+    worker.contractorVerification="rejected";
+    GS.saveWorker(worker);
+    GS.sendWorkerMessage(
+      worker.id,
+      "Contractor Verification Update",
+      "Your contractor verification was not approved. Please review your documents and contact admin.",
+      "verification"
+    );
+
+    renderAll();
+    return;
+  }
+
+  if(button.classList.contains("approveCert")){
+    const worker=GS.workers().find(x=>x.id===button.dataset.wid);
+    const cert=(worker?.certifications||[]).find(x=>x.id===button.dataset.cid);
+    if(!worker||!cert)return;
+
+    cert.verified=true;
+    cert.status="approved";
+    cert.approvedAt=new Date().toISOString();
+
+    GS.saveWorker(worker);
+
+    GS.sendWorkerMessage(
+      worker.id,
+      "Certificate Approved",
+      `Your certificate “${cert.name||"Certificate"}” has been approved. You now have the ✓ Certified badge.`,
+      "certificate"
+    );
+
+    renderAll();
+    return;
+  }
+
+  if(button.classList.contains("rejectCert")){
+    const reason=prompt("Enter rejection reason:","Certificate could not be verified.");
+    if(reason===null)return;
+
+    const worker=GS.workers().find(x=>x.id===button.dataset.wid);
+    const cert=(worker?.certifications||[]).find(x=>x.id===button.dataset.cid);
+    if(!worker||!cert)return;
+
+    cert.verified=false;
+    cert.status="rejected";
+    cert.rejectionReason=reason.trim();
+
+    GS.saveWorker(worker);
+
+    GS.sendWorkerMessage(
+      worker.id,
+      "Certificate Rejected",
+      `Your certificate “${cert.name||"Certificate"}” was rejected. Reason: ${reason.trim()}`,
+      "certificate"
+    );
+
+    renderAll();
+    return;
+  }
+
+  if(button.classList.contains("messageWorker")){
+    els.messageWorker.value=button.dataset.id||"";
+    els.messageTitle.focus();
+    window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+    return;
+  }
+
+  if(button.classList.contains("deleteWorker")){
+    const workerId=button.dataset.id;
+    const workerName=button.dataset.name||"this worker";
+
+    if(!confirm(`Permanently delete ${workerName}'s worker account? This removes the worker profile, bookings and admin messages.`)){
+      return;
+    }
+
+    GS.deleteWorkerAccount(workerId);
+    renderAll();
+    return;
+  }
+
+  /* Complaint save */
+  if(button.classList.contains("saveComplaint")){
+    saveComplaint(button.dataset.id);
+    return;
+  }
+});
+
+/* =========================
+   SAVE COMPLAINT
+========================= */
+
+function saveComplaint(id){
+  if(!id){
+    showComplaintNotice("Complaint ID is missing.",false);
+    return;
+  }
+
+  const statusEl=document.querySelector(`.complaintStatus[data-id="${CSS.escape(id)}"]`);
+  const responseEl=document.querySelector(`.complaintResponse[data-id="${CSS.escape(id)}"]`);
+
+  if(!statusEl||!responseEl){
+    showComplaintNotice("Could not find the complaint fields. Please refresh the complaints section.",false);
+    return;
+  }
+
+  const complaints=getComplaints();
+  const complaint=complaints.find(x=>String(x.id)===String(id));
+
+  if(!complaint){
+    showComplaintNotice("This complaint no longer exists. Refresh the complaints section.",false);
+    renderComplaints();
+    return;
+  }
+
+  const newStatus=complaintStatus(statusEl.value);
+  const newResponse=responseEl.value.trim();
+  const oldStatus=complaintStatus(complaint.status);
+  const now=new Date().toISOString();
+
+  if(!newResponse && (newStatus==='resolved' || newStatus==='rejected')){
+    const ok=confirm("You selected a final status but did not enter a resolution note. Save anyway?");
+    if(!ok)return;
+  }
+
+  complaint.status=newStatus;
+  complaint.adminResponse=newResponse;
+  complaint.resolution=newResponse;
+  complaint.updatedAt=now;
+  complaint.lastAdminActionAt=now;
+
+  if(newStatus==='resolved') complaint.resolvedAt=complaint.resolvedAt||now;
+  if(newStatus==='rejected') complaint.rejectedAt=complaint.rejectedAt||now;
+
+  if(newStatus!=='resolved') delete complaint.resolvedAt;
+  if(newStatus!=='rejected') delete complaint.rejectedAt;
+
+  GS.saveComplaints(complaints);
+
+  /* Notify the related worker. */
+  if(complaint.workerId && typeof GS.sendWorkerMessage==='function'){
+    const workerName=GS.workers().find(w=>w.id===complaint.workerId)?.name||"Worker";
+    const responsePart=newResponse?`\n\nAdmin response: ${newResponse}`:"";
+
+    GS.sendWorkerMessage(
+      complaint.workerId,
+      "Complaint Update",
+      `Complaint “${complaint.subject||complaint.title||complaint.id}” has been updated from “${complaintStatusLabel(oldStatus)}” to “${complaintStatusLabel(newStatus)}”.${responsePart}`,
+      "complaint"
+    );
+
+    /* Keep the worker reference in the complaint for future UI consumers. */
+    complaint.workerNotifiedAt=now;
+    complaint.workerNotified=true;
+    complaint.workerDisplayName=workerName;
+  }
+
+  /*
+     Store a customer-facing update directly on the complaint as well.
+     Customer pages can read adminResponse/status from this same object,
+     so the resolution is not lost even if no separate notification exists.
+  */
+  complaint.customerNotifiedAt=now;
+  complaint.customerNotification={
+    status:newStatus,
+    statusLabel:complaintStatusLabel(newStatus),
+    response:newResponse,
+    updatedAt:now
+  };
+
+  /* Save once more after notification metadata is attached. */
+  GS.saveComplaints(complaints);
+
+  showComplaintNotice(
+    `Complaint ${complaint.id} updated successfully. Status: ${complaintStatusLabel(newStatus)}.`,
+    true
+  );
+
+  renderComplaints();
+}
+
+/* =========================
+   SEND ADMIN MESSAGE
+========================= */
+
+els.sendMessage.onclick=()=>{
+  const wid=els.messageWorker.value;
+  const title=els.messageTitle.value.trim()||"Message from Admin";
+  const text=els.messageText.value.trim();
+
+  if(!wid||!text){
+    showMessage("Select a worker and enter a message.",false);
+    return;
+  }
+
+  GS.sendWorkerMessage(wid,title,text);
+
+  els.messageText.value="";
+  els.messageTitle.value="";
+
+  showMessage("Message sent to the worker.",true);
+};
+
+/* =========================
+   MANUAL COMPLAINT REFRESH
+========================= */
+
+els.refreshComplaints.onclick=()=>{
+  renderComplaints();
+  showComplaintNotice("Complaints refreshed.",true);
+};
+
+/* =========================
+   LOGOUT
+========================= */
+
+els.logout.onclick=()=>{
+  localStorage.removeItem(GS.keys.adminSession);
+  location.href="admin-login.html";
+};
+
+/* =========================
+   CROSS-TAB SYNC
+   This is safe because it does not
+   constantly rebuild the form while typing.
+========================= */
+
+window.addEventListener("storage",event=>{
+  if(!event.key)return;
+
+  if([
+    GS.keys.workers,
+    GS.keys.bookings,
+    GS.keys.complaints,
+    GS.keys.messages
+  ].includes(event.key)){
+    renderStats();
+    renderWorkers();
+    renderCertificates();
+    renderBookings();
+
+    /* Only refresh complaint cards if the admin is not currently editing one. */
+    const active=document.activeElement;
+    const editingComplaint=active && (
+      active.classList.contains("complaintStatus") ||
+      active.classList.contains("complaintResponse")
+    );
+
+    if(!editingComplaint){
+      renderComplaints();
+    }
+  }
+});
+
+/* Initial load */
+renderAll();
+
+</script>
+
+<script src="./griahsathi-language.js"></script>
+<script src="./griahsathi-ai.js"></script>
+</body>
+</html>

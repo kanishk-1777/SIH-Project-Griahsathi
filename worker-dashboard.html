@@ -1,0 +1,2189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Worker Dashboard | Griahsathi</title>
+
+<link rel="stylesheet" href="./output.css">
+<script src="./griahsathi-core.js"></script>
+
+<style>
+body{
+  background:#080B10;
+  color:#fff;
+  transition:background .25s ease,color .25s ease;
+}
+
+.light-mode{
+  background:#f5f7f6!important;
+  color:#111827!important;
+}
+
+.card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.1);
+  transition:background .25s ease,border-color .25s ease;
+}
+
+.light-mode .card{
+  background:#fff;
+  border-color:rgba(0,0,0,.08);
+}
+
+.light-mode input,
+.light-mode select{
+  background:#fff!important;
+  color:#111827!important;
+}
+
+.light-mode .text-gray-400{
+  color:#6b7280!important;
+}
+
+.light-mode .text-gray-500{
+  color:#6b7280!important;
+}
+
+.service-card{
+  transition:.2s;
+}
+
+.service-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(74,222,128,.3);
+}
+
+.selected{
+  border-color:rgba(74,222,128,.55)!important;
+  background:rgba(74,222,128,.08)!important;
+}
+
+.theme-btn{
+  transition:.2s ease;
+}
+
+.theme-btn:hover{
+  transform:translateY(-1px);
+}
+
+.light-mode .border-white\/10{
+  border-color:rgba(0,0,0,.1)!important;
+}
+
+.light-mode .bg-white\/\[\.04\]{
+  background:rgba(0,0,0,.04)!important;
+}
+
+.light-mode .bg-white\/\[\.02\]{
+  background:rgba(0,0,0,.02)!important;
+}
+</style>
+
+</head>
+
+<body class="antialiased">
+
+<main class="px-5 pb-16 pt-8">
+
+<div class="mx-auto max-w-7xl">
+
+<div id="guard"></div>
+
+
+<!-- HEADER -->
+
+<div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+
+<div>
+
+<p class="text-sm font-semibold uppercase tracking-[.2em] text-green-400">
+Worker Dashboard
+</p>
+
+<h1 id="hello" class="mt-2 text-4xl font-bold">
+Welcome
+</h1>
+
+<p id="workerIdText" class="mt-2 text-gray-400"></p>
+
+</div>
+
+
+<div class="flex flex-wrap gap-3">
+
+<!-- THEME BUTTON -->
+
+<button
+id="themeToggle"
+class="theme-btn rounded-xl border border-white/10 px-4 py-3 font-semibold"
+type="button">
+
+🌙 Dark Mode
+
+</button>
+
+
+<!-- PROFILE -->
+
+<a
+href="worker-profile.html"
+class="rounded-xl border border-white/10 px-4 py-3 font-semibold">
+
+My Profile
+
+</a>
+
+
+<!-- LOGOUT -->
+
+<button
+id="logoutBtn"
+class="rounded-xl border border-red-400/30 px-4 py-3 font-semibold text-red-300">
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- STATS -->
+
+<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+<div class="card rounded-2xl p-6">
+
+<p class="text-sm text-gray-400">
+Today's Earnings
+</p>
+
+<p
+id="todayEarn"
+class="mt-2 text-3xl font-bold text-green-400">
+
+₹0
+
+</p>
+
+</div>
+
+
+<div class="card rounded-2xl p-6">
+
+<p class="text-sm text-gray-400">
+Total Earnings
+</p>
+
+<p
+id="totalEarn"
+class="mt-2 text-3xl font-bold">
+
+₹0
+
+</p>
+
+</div>
+
+
+<div class="card rounded-2xl p-6">
+
+<p class="text-sm text-gray-400">
+Completed Gigs
+</p>
+
+<p
+id="jobs"
+class="mt-2 text-3xl font-bold">
+
+0
+
+</p>
+
+</div>
+
+
+<div class="card rounded-2xl p-6">
+
+<p class="text-sm text-gray-400">
+Rating
+</p>
+
+<p
+id="rating"
+class="mt-2 text-3xl font-bold">
+
+0.0 ⭐
+
+</p>
+
+</div>
+
+</div>
+
+
+
+<!-- MAIN CONTENT -->
+
+<div class="mt-8 grid gap-8 lg:grid-cols-[1.35fr_.65fr]">
+
+
+<!-- LEFT -->
+
+<section>
+
+<div class="card rounded-3xl p-6 sm:p-8">
+
+
+<div class="flex flex-wrap items-center justify-between gap-4">
+
+<div>
+
+<h2 class="text-2xl font-bold">
+Register for Work
+</h2>
+
+<p class="mt-1 text-sm text-gray-400">
+Select one category at a time and choose multiple services.
+</p>
+
+</div>
+
+
+<div id="availabilityWrap"></div>
+
+</div>
+
+
+
+<!-- CATEGORIES -->
+
+<div class="mt-6 grid gap-3 md:grid-cols-3">
+
+
+<button
+class="cat-btn rounded-2xl border border-white/10 p-4 text-left"
+data-cat="Madad Sathi">
+
+🧹
+
+<span class="mt-2 block font-bold">
+Madad Sathi
+</span>
+
+<span class="text-xs text-gray-400">
+Everyday help
+</span>
+
+</button>
+
+
+
+<button
+class="cat-btn rounded-2xl border border-white/10 p-4 text-left"
+data-cat="Hunar Sathi">
+
+🔧
+
+<span class="mt-2 block font-bold">
+Hunar Sathi
+</span>
+
+<span class="text-xs text-gray-400">
+Skilled work
+</span>
+
+</button>
+
+
+
+<button
+id="teamBtn"
+class="cat-btn rounded-2xl border border-white/10 p-4 text-left"
+data-cat="Team Sathi">
+
+👥
+
+<span class="mt-2 block font-bold">
+Team Sathi
+</span>
+
+<span class="text-xs text-gray-400">
+Contractors only
+</span>
+
+</button>
+
+</div>
+
+
+
+<!-- CONTRACTOR VERIFICATION -->
+
+<div
+id="teamVerifyBox"
+class="mt-5 hidden rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+
+<h3 class="font-bold text-yellow-300">
+Team Sathi Contractor Verification
+</h3>
+
+<p class="mt-1 text-sm text-gray-400">
+Upload/record your contractor license, GST certificate and government ID proof for admin verification.
+</p>
+
+<div class="mt-4 grid gap-3 sm:grid-cols-3">
+
+<input
+id="licenseFile"
+type="file"
+accept=".pdf,.jpg,.jpeg,.png"
+class="rounded-xl border border-white/10 bg-white/[.04] px-3 py-3 text-sm">
+
+<input
+id="gstFile"
+type="file"
+accept=".pdf,.jpg,.jpeg,.png"
+class="rounded-xl border border-white/10 bg-white/[.04] px-3 py-3 text-sm">
+
+<input
+id="idFile"
+type="file"
+accept=".pdf,.jpg,.jpeg,.png"
+class="rounded-xl border border-white/10 bg-white/[.04] px-3 py-3 text-sm">
+
+</div>
+
+<button
+id="submitTeam"
+class="mt-4 rounded-xl bg-yellow-400 px-5 py-3 font-bold text-black">
+
+Submit for Verification
+
+</button>
+
+</div>
+
+
+
+<!-- SERVICES -->
+
+<div class="mt-7">
+
+<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+<div>
+
+<h3
+id="catalogTitle"
+class="text-xl font-bold">
+
+Select a category
+
+</h3>
+
+<p class="text-sm text-gray-400">
+Each selected service can have its own pricing.
+</p>
+
+</div>
+
+
+<input
+id="serviceSearch"
+placeholder="Search services..."
+class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 text-sm sm:w-72">
+
+</div>
+
+
+<div
+id="serviceGrid"
+class="mt-5 grid gap-4 sm:grid-cols-2">
+
+</div>
+
+</div>
+
+
+
+<!-- SAVE BUTTONS -->
+
+<div class="mt-7 flex flex-wrap gap-3">
+
+<button
+id="saveServices"
+class="rounded-xl bg-green-500 px-6 py-3 font-bold text-black">
+
+Save My Services & Prices
+
+</button>
+
+
+<a
+href="worker-profile.html"
+class="rounded-xl border border-white/10 px-6 py-3 font-semibold">
+
+View Public Profile
+
+</a>
+
+</div>
+
+
+<div
+id="dashMsg"
+class="mt-5 hidden rounded-xl px-4 py-3 text-sm">
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- RIGHT SIDE -->
+
+<aside class="space-y-5">
+
+
+<!-- GIG REQUESTS -->
+
+<div class="card rounded-3xl p-6">
+
+<div class="flex items-center justify-between gap-3">
+
+<div>
+
+<h2 class="text-xl font-bold">
+Gig Requests
+</h2>
+
+<p class="mt-1 text-xs text-gray-400">
+Accept, reject and complete accepted customer requests here.
+</p>
+
+</div>
+
+
+<span
+id="pendingGigCount"
+class="rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-300">
+
+0 pending
+
+</span>
+
+</div>
+
+
+<div
+id="gigRequests"
+class="mt-4 space-y-3">
+
+</div>
+
+</div>
+
+
+
+<!-- NOTIFICATIONS -->
+
+<div class="card rounded-3xl p-6">
+
+<h2 class="text-xl font-bold">
+Notifications
+</h2>
+
+<p class="mt-1 text-xs text-gray-400">
+New gig requests appear here. Accept, reject or complete them from Gig Requests.
+</p>
+
+
+<div
+id="notifications"
+class="mt-4 space-y-3">
+
+</div>
+
+</div>
+
+
+
+<!-- SELECTED SERVICES -->
+
+<div class="card rounded-3xl p-6">
+
+<h2 class="text-xl font-bold">
+My Selected Services
+</h2>
+
+
+<div
+id="selectedServices"
+class="mt-4 space-y-3">
+
+</div>
+
+</div>
+
+</aside>
+
+</div>
+
+
+
+<!-- DELETE ACCOUNT -->
+
+<!-- ADMIN MESSAGES -->
+<section class="mt-10"><div class="card rounded-3xl p-6 sm:p-8"><div class="flex items-center justify-between gap-3"><div><p class="text-sm font-semibold uppercase tracking-[.2em] text-green-400">Admin Communication</p><h2 class="mt-2 text-2xl font-bold">Messages from Griahsathi Admin</h2><p class="mt-1 text-sm text-gray-400">Important messages and certificate decisions appear here.</p></div><span id="adminUnreadCount" class="rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-300">0 unread</span></div><div id="adminMessages" class="mt-5 space-y-3"></div></div></section>
+<section class="mt-6"><div class="card rounded-3xl p-6 sm:p-8"><div class="flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-2xl font-bold">My Certification</h2><p class="mt-1 text-sm text-gray-400">Admin approval is required for the Certified badge.</p></div><a href="worker-profile.html" class="rounded-xl bg-green-500 px-4 py-3 font-bold text-black">Manage Certificates</a></div><div id="certStatus" class="mt-5"></div></div></section>
+<section class="mt-6"><div class="card rounded-3xl p-6 sm:p-8"><h2 class="text-2xl font-bold">My Complaints</h2><p class="mt-1 text-sm text-gray-400">Track complaints and admin resolutions.</p><div id="workerComplaints" class="mt-5 space-y-3"></div></div></section>
+
+<section class="mt-10">
+
+<div
+class="card rounded-3xl border border-red-400/20 p-6 sm:p-8">
+
+<p class="text-sm font-semibold uppercase tracking-[.2em] text-red-400">
+Danger Zone
+</p>
+
+
+<h2 class="mt-2 text-2xl font-bold text-red-300">
+Delete Account
+</h2>
+
+
+<p class="mt-2 max-w-3xl text-sm text-gray-400">
+
+Permanently delete your Griahsathi worker account. You must verify your registered phone number using an OTP before your account can be deleted.
+
+</p>
+
+
+<!-- PHONE -->
+
+<div class="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]">
+
+<input
+id="deletePhone"
+type="tel"
+inputmode="numeric"
+maxlength="10"
+placeholder="Enter your registered phone number"
+class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 text-sm">
+
+
+<button
+id="sendDeleteOtp"
+class="rounded-xl border border-red-400/30 bg-red-400/10 px-5 py-3 font-semibold text-red-300">
+
+Send OTP
+
+</button>
+
+</div>
+
+
+
+<!-- OTP -->
+
+<div
+id="deleteOtpWrap"
+class="mt-4 hidden">
+
+<div class="grid gap-3 sm:grid-cols-[1fr_auto]">
+
+<input
+id="deleteOtp"
+type="text"
+inputmode="numeric"
+maxlength="6"
+placeholder="Enter 6-digit OTP"
+class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 text-sm">
+
+
+<button
+id="confirmDelete"
+class="rounded-xl bg-red-500 px-5 py-3 font-bold text-white">
+
+Delete My Account
+
+</button>
+
+</div>
+
+
+<p
+id="deleteOtpHint"
+class="mt-2 text-xs text-gray-500">
+
+</p>
+
+</div>
+
+
+
+<!-- DELETE MESSAGE -->
+
+<div
+id="deleteMsg"
+class="mt-4 hidden rounded-xl px-4 py-3 text-sm">
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+
+
+<script>
+
+/* ============================= */
+/* WORKER AUTH */
+/* ============================= */
+
+const worker = GS.currentWorker();
+
+if(!worker){
+
+location.href = "worker-auth.html";
+
+throw new Error("auth");
+
+}
+
+
+hello.textContent =
+`Welcome, ${worker.name}`;
+
+workerIdText.textContent =
+`Worker ID: ${worker.id}`;
+
+
+/* ============================= */
+/* THEME */
+/* ============================= */
+
+const themeToggle =
+document.getElementById("themeToggle");
+
+
+function applyDashboardTheme(){
+
+const savedTheme =
+localStorage.getItem("griahsathi-theme");
+
+
+const light =
+savedTheme === "light";
+
+
+document.body.classList.toggle(
+"light-mode",
+light
+);
+
+
+themeToggle.textContent =
+light
+? "☀️ Light Mode"
+: "🌙 Dark Mode";
+
+}
+
+
+applyDashboardTheme();
+
+
+themeToggle.onclick = () => {
+
+const isLight =
+document.body.classList.contains("light-mode");
+
+
+const newTheme =
+isLight
+? "dark"
+: "light";
+
+
+localStorage.setItem(
+"griahsathi-theme",
+newTheme
+);
+
+
+document.body.classList.toggle(
+"light-mode",
+newTheme === "light"
+);
+
+
+themeToggle.textContent =
+newTheme === "light"
+? "☀️ Light Mode"
+: "🌙 Dark Mode";
+
+};
+
+
+
+/* ============================= */
+/* STATS */
+/* ============================= */
+
+refreshWorkerStats();
+
+
+
+/* ============================= */
+/* AVAILABILITY */
+/* ============================= */
+
+availabilityWrap.innerHTML = `
+<button
+id="availability"
+class="rounded-full border px-5 py-2.5 text-sm font-semibold">
+</button>
+`;
+
+
+function renderAvailability(){
+
+availability.textContent =
+worker.available
+? "● Available"
+: "○ Not Available";
+
+
+availability.className =
+`rounded-full border px-5 py-2.5 text-sm font-semibold ${
+worker.available
+? "border-green-400/30 bg-green-400/10 text-green-400"
+: "border-red-400/30 bg-red-400/10 text-red-300"
+}`;
+
+}
+
+
+renderAvailability();
+
+
+availability.onclick = () => {
+
+worker.available =
+!worker.available;
+
+GS.saveWorker(worker);
+
+renderAvailability();
+
+};
+
+
+
+/* ============================= */
+/* SERVICES */
+/* ============================= */
+
+let activeCategory = null;
+
+let draftServices =
+[...(worker.services || [])];
+
+
+function showMsg(text,ok=true){
+
+dashMsg.textContent =
+text;
+
+dashMsg.className =
+`mt-5 rounded-xl px-4 py-3 text-sm ${
+ok
+? "bg-green-400/10 text-green-300"
+: "bg-red-400/10 text-red-300"
+}`;
+
+dashMsg.classList.remove("hidden");
+
+}
+
+
+document
+.querySelectorAll(".cat-btn")
+.forEach(btn => {
+
+btn.onclick = () => {
+
+activeCategory =
+btn.dataset.cat;
+
+
+teamVerifyBox.classList.toggle(
+"hidden",
+activeCategory !== "Team Sathi" ||
+worker.contractorVerification === "approved"
+);
+
+
+catalogTitle.textContent =
+`${activeCategory} Services`;
+
+
+renderCatalog();
+
+};
+
+});
+
+
+teamBtn.onclick = () => {
+
+activeCategory =
+"Team Sathi";
+
+
+teamVerifyBox.classList.toggle(
+"hidden",
+worker.contractorVerification === "approved"
+);
+
+
+catalogTitle.textContent =
+"Team Sathi Services";
+
+
+renderCatalog();
+
+};
+
+
+
+function renderCatalog(){
+
+const q =
+serviceSearch.value
+.trim()
+.toLowerCase();
+
+
+const list =
+SERVICE_CATALOG.filter(
+s =>
+s.category === activeCategory &&
+s.title.toLowerCase().includes(q)
+);
+
+
+serviceGrid.innerHTML =
+list.map(s => {
+
+const current =
+draftServices.find(
+x => x.slug === s.slug
+);
+
+
+return `
+
+<div
+class="service-card rounded-2xl border border-white/10 bg-white/[.02] p-4 ${
+current ? "selected" : ""
+}">
+
+<div
+class="flex items-start justify-between gap-3">
+
+<div>
+
+<div class="text-2xl">
+${s.icon}
+</div>
+
+<h4 class="mt-2 font-bold">
+
+${GS.escape(s.title)}
+
+</h4>
+
+<p class="text-xs text-gray-400">
+
+${s.category}
+
+</p>
+
+</div>
+
+
+<input
+class="service-check mt-1 h-5 w-5"
+data-slug="${s.slug}"
+type="checkbox"
+${current ? "checked" : ""}
+>
+
+</div>
+
+
+<div
+class="price-wrap mt-4 ${
+current ? "" : "hidden"
+}"
+data-wrap="${s.slug}">
+
+<div class="grid grid-cols-2 gap-2">
+
+<select
+data-type="${s.slug}"
+class="rounded-xl border border-white/10 bg-[#11161d] px-3 py-2 text-sm">
+
+<option
+value="fixed"
+${current?.priceType === "fixed" ? "selected" : ""}
+>
+Fixed
+</option>
+
+<option
+value="hourly"
+${current?.priceType === "hourly" ? "selected" : ""}
+>
+Per Hour
+</option>
+
+<option
+value="daily"
+${current?.priceType === "daily" ? "selected" : ""}
+>
+Per Day
+</option>
+
+</select>
+
+
+<input
+data-price="${s.slug}"
+type="number"
+min="1"
+value="${current?.price || ""}"
+placeholder="Price ₹"
+class="rounded-xl border border-white/10 bg-white/[.04] px-3 py-2 text-sm">
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+
+document
+.querySelectorAll(".service-check")
+.forEach(c => {
+
+c.onchange = () => {
+
+const s =
+GS.service(c.dataset.slug);
+
+
+if(c.checked){
+
+if(
+!draftServices.some(
+x => x.slug === s.slug
+)
+){
+
+draftServices.push({
+
+slug:s.slug,
+priceType:"fixed",
+price:0
+
+});
+
+}
+
+}
+else{
+
+draftServices =
+draftServices.filter(
+x => x.slug !== c.dataset.slug
+);
+
+}
+
+
+renderCatalog();
+
+renderSelected();
+
+};
+
+});
+
+
+document
+.querySelectorAll("[data-price]")
+.forEach(i => {
+
+i.oninput = () => {
+
+const d =
+draftServices.find(
+x => x.slug === i.dataset.price
+);
+
+if(d)
+d.price =
+Number(i.value);
+
+};
+
+});
+
+
+document
+.querySelectorAll("[data-type]")
+.forEach(i => {
+
+i.onchange = () => {
+
+const d =
+draftServices.find(
+x => x.slug === i.dataset.type
+);
+
+if(d)
+d.priceType =
+i.value;
+
+};
+
+});
+
+}
+
+
+serviceSearch.oninput =
+renderCatalog;
+
+
+
+/* ============================= */
+/* SAVE SERVICES */
+/* ============================= */
+
+saveServices.onclick = () => {
+
+for(const s of draftServices){
+
+if(!s.price || s.price < 1){
+
+return showMsg(
+`Enter a valid price for ${GS.service(s.slug)?.title}.`,
+false
+);
+
+}
+
+}
+
+
+if(
+activeCategory === "Team Sathi" &&
+worker.contractorVerification !== "approved"
+){
+
+return showMsg(
+"Team Sathi requires admin contractor verification first.",
+false
+);
+
+}
+
+
+worker.services =
+draftServices;
+
+
+GS.saveWorker(worker);
+
+
+renderSelected();
+
+
+showMsg(
+"Your service registration and prices were saved.",
+true
+);
+
+};
+
+
+
+/* ============================= */
+/* SELECTED SERVICES */
+/* ============================= */
+
+function renderSelected(){
+
+selectedServices.innerHTML =
+(worker.services || []).length
+
+?
+
+(worker.services || [])
+.map(s => `
+
+<div
+class="rounded-xl border border-white/10 p-3">
+
+<div
+class="flex justify-between gap-3">
+
+<span class="font-semibold">
+
+${GS.escape(
+GS.service(s.slug)?.title ||
+s.slug
+)}
+
+</span>
+
+
+<span class="text-green-400 font-bold">
+
+₹${s.price}
+
+${
+s.priceType === "hourly"
+? "/hr"
+: s.priceType === "daily"
+? "/day"
+: ""
+}
+
+</span>
+
+</div>
+
+</div>
+
+`)
+.join("")
+
+:
+
+`<p class="text-sm text-gray-400">
+No services registered yet.
+</p>`;
+
+}
+
+
+
+/* ============================= */
+/* STATS */
+/* ============================= */
+
+function refreshWorkerStats(){
+
+const bookings =
+GS.bookings()
+.filter(
+b => b.workerId === worker.id
+);
+
+
+const completed =
+bookings.filter(
+b => b.status === "completed"
+);
+
+
+const today =
+new Date()
+.toISOString()
+.slice(0,10);
+
+
+const todayCompleted =
+completed.filter(
+b =>
+b.completedAt &&
+b.completedAt.slice(0,10) === today
+);
+
+
+worker.totalCompletedJobs =
+completed.length;
+
+
+worker.totalEarnings =
+completed.reduce(
+(sum,b) =>
+sum + Number(b.price || 0),
+0
+);
+
+
+worker.todayEarnings =
+todayCompleted.reduce(
+(sum,b) =>
+sum + Number(b.price || 0),
+0
+);
+
+
+GS.syncWorkerRatings(worker);
+
+
+todayEarn.textContent =
+`₹${worker.todayEarnings}`;
+
+
+totalEarn.textContent =
+`₹${worker.totalEarnings}`;
+
+
+jobs.textContent =
+worker.totalCompletedJobs;
+
+
+rating.textContent =
+`${Number(
+worker.ratingAverage || 0
+).toFixed(1)} ⭐ (${
+worker.totalRatings || 0
+})`;
+
+}
+
+
+
+/* ============================= */
+/* GIG REQUESTS */
+/* ============================= */
+
+function renderGigRequests(){
+
+const bookings =
+GS.bookings()
+.filter(
+b => b.workerId === worker.id
+)
+.sort(
+(a,b) =>
+new Date(b.createdAt) -
+new Date(a.createdAt)
+);
+
+
+const pending =
+bookings.filter(
+b => b.status === "pending"
+);
+
+
+pendingGigCount.textContent =
+`${pending.length} pending`;
+
+
+gigRequests.innerHTML =
+bookings.length
+
+?
+
+bookings
+.slice(0,12)
+.map(b => {
+
+const s =
+GS.service(b.service);
+
+
+let action = "";
+
+
+if(b.status === "pending"){
+
+action = `
+
+<div
+class="mt-4 grid grid-cols-2 gap-2">
+
+<button
+data-accept="${b.id}"
+class="rounded-xl bg-green-500 px-3 py-2 text-sm font-bold text-black">
+
+✓ Accept
+
+</button>
+
+
+<button
+data-reject="${b.id}"
+class="rounded-xl border border-red-400/30 px-3 py-2 text-sm font-semibold text-red-300">
+
+✕ Reject
+
+</button>
+
+</div>
+
+`;
+
+}
+
+
+else if(b.status === "accepted"){
+
+action = `
+
+<div class="mt-4">
+
+<button
+data-complete="${b.id}"
+class="w-full rounded-xl bg-blue-500 px-3 py-2 text-sm font-bold text-white hover:bg-blue-400">
+
+✓ Mark Task Completed
+
+</button>
+
+</div>
+
+`;
+
+}
+
+
+else if(b.status === "completed"){
+
+action = `
+
+<div
+class="mt-4 rounded-xl border border-blue-400/20 bg-blue-400/10 px-3 py-2 text-sm font-semibold text-blue-300">
+
+✓ Task Completed
+${b.reviewSubmitted ? " · Customer Reviewed" : ""}
+
+</div>
+
+`;
+
+}
+
+
+else{
+
+action = `
+
+<div
+class="mt-4 rounded-xl border border-white/10 px-3 py-2 text-sm font-semibold text-red-300">
+
+Rejected
+
+</div>
+
+`;
+
+}
+
+
+
+return `
+
+<div
+class="rounded-2xl border ${
+b.status === "pending"
+? "border-yellow-400/20 bg-yellow-400/5"
+: b.status === "accepted"
+? "border-green-400/20 bg-green-400/5"
+: b.status === "completed"
+? "border-blue-400/20 bg-blue-400/5"
+: "border-white/10"
+} p-4">
+
+
+<div
+class="flex items-start justify-between gap-3">
+
+<div>
+
+<p class="font-bold">
+
+${GS.escape(
+s?.title || b.service
+)}
+
+</p>
+
+
+<p class="mt-1 text-sm">
+
+${GS.escape(
+b.customerName || "Customer"
+)}
+
+</p>
+
+</div>
+
+
+<span class="text-xs text-gray-500">
+
+${GS.escape(b.id)}
+
+</span>
+
+</div>
+
+
+
+<div
+class="mt-3 grid gap-1 text-xs text-gray-400">
+
+<p>
+📅 ${GS.escape(b.date)}
+at ${GS.escape(b.time)}
+</p>
+
+
+<p>
+📍 ${GS.escape(
+b.customerLocation?.city || ""
+)}
+${GS.escape(
+b.customerLocation?.district || ""
+)}
+</p>
+
+
+<p>
+💰 ₹${Number(b.price || 0)}
+
+${
+b.priceType === "hourly"
+? "/hr"
+: b.priceType === "daily"
+? "/day"
+: ""
+}
+
+</p>
+
+
+${
+b.notes
+? `<p>📝 ${GS.escape(b.notes)}</p>`
+: ""
+}
+
+</div>
+
+
+${action}
+
+</div>
+
+`;
+
+})
+.join("")
+
+:
+
+`<p class="text-sm text-gray-400">
+
+No gig requests yet.
+
+</p>`;
+
+
+document
+.querySelectorAll("[data-accept]")
+.forEach(btn =>
+
+btn.onclick = () =>
+updateGigStatus(
+btn.dataset.accept,
+"accepted"
+)
+
+);
+
+
+document
+.querySelectorAll("[data-reject]")
+.forEach(btn =>
+
+btn.onclick = () =>
+updateGigStatus(
+btn.dataset.reject,
+"rejected"
+)
+
+);
+
+
+document
+.querySelectorAll("[data-complete]")
+.forEach(btn =>
+
+btn.onclick = () =>
+updateGigStatus(
+btn.dataset.complete,
+"completed"
+)
+
+);
+
+}
+
+
+
+/* ============================= */
+/* UPDATE GIG STATUS */
+/* ============================= */
+
+function updateGigStatus(
+bookingId,
+newStatus
+){
+
+const bookings =
+GS.bookings();
+
+
+const booking =
+bookings.find(
+b =>
+b.id === bookingId &&
+b.workerId === worker.id
+);
+
+
+if(!booking)
+return;
+
+
+if(
+newStatus === "accepted" &&
+booking.status !== "pending"
+)
+return;
+
+
+if(
+newStatus === "rejected" &&
+booking.status !== "pending"
+)
+return;
+
+
+if(
+newStatus === "completed" &&
+booking.status !== "accepted"
+)
+return;
+
+
+const now =
+new Date().toISOString();
+
+
+booking.status =
+newStatus;
+
+
+booking.updatedAt =
+now;
+
+
+if(newStatus === "completed")
+booking.completedAt =
+now;
+
+
+GS.saveBookings(bookings);
+
+
+refreshWorkerStats();
+
+
+worker.notifications =
+worker.notifications || [];
+
+
+worker.notifications.push({
+
+title:
+newStatus === "accepted"
+? "Gig Accepted"
+: newStatus === "rejected"
+? "Gig Rejected"
+: "Task Completed",
+
+
+text:
+`${GS.service(booking.service)?.title || booking.service} · ${
+booking.customerName || "Customer"
+} · ${booking.date} ${booking.time}`,
+
+
+at:now,
+
+bookingId:booking.id,
+
+type:"gig-status",
+
+status:newStatus
+
+});
+
+
+GS.saveWorker(worker);
+
+
+renderGigRequests();
+
+renderNotifications();
+
+
+showMsg(
+
+newStatus === "accepted"
+
+? "Gig accepted. The customer can now see that you accepted it."
+
+: newStatus === "rejected"
+
+? "Gig rejected. The customer can see the updated status."
+
+: "Task marked completed. The customer can now rate and review your work.",
+
+true
+
+);
+
+}
+
+
+
+/* ============================= */
+/* NOTIFICATIONS */
+/* ============================= */
+
+function renderNotifications(){
+
+const ns =
+worker.notifications || [];
+
+
+notifications.innerHTML =
+ns.length
+
+?
+
+ns
+.slice(-8)
+.reverse()
+.map(n => `
+
+<div
+class="rounded-xl border border-white/10 p-3">
+
+<div
+class="flex items-start justify-between gap-3">
+
+<p class="font-semibold">
+
+${GS.escape(n.title)}
+
+</p>
+
+
+${
+n.type === "gig" &&
+n.status === "pending"
+
+?
+
+'<span class="rounded-full bg-yellow-400/10 px-2 py-1 text-[10px] font-semibold text-yellow-300">Action needed</span>'
+
+:
+
+""
+
+}
+
+</div>
+
+
+<p class="mt-1 text-xs text-gray-400">
+
+${GS.escape(n.text)}
+
+</p>
+
+
+<p
+class="mt-2 text-[11px] text-gray-500">
+
+${new Date(
+n.at
+).toLocaleString()}
+
+</p>
+
+</div>
+
+`)
+.join("")
+
+:
+
+`<p class="text-sm text-gray-400">
+No notifications.
+</p>`;
+
+}
+
+
+
+/* ============================= */
+/* CONTRACTOR VERIFICATION */
+/* ============================= */
+
+submitTeam.onclick = () => {
+
+if(
+!licenseFile.files[0] ||
+!gstFile.files[0] ||
+!idFile.files[0]
+){
+
+return showMsg(
+"Upload all three contractor documents.",
+false
+);
+
+}
+
+
+worker.workerType =
+"contractor";
+
+
+worker.contractorVerification =
+"pending";
+
+
+worker.contractorDocuments = {
+
+license:
+licenseFile.files[0].name,
+
+gst:
+gstFile.files[0].name,
+
+idProof:
+idFile.files[0].name
+
+};
+
+
+GS.saveWorker(worker);
+
+
+showMsg(
+"Contractor documents submitted. Admin verification is pending.",
+true
+);
+
+};
+
+
+
+/* ============================= */
+/* ADMIN MESSAGES / CERTIFICATES / COMPLAINTS */
+/* ============================= */
+function renderAdminMessages(){const msgs=GS.workerMessages(worker.id),unread=msgs.filter(m=>!m.read).length;adminUnreadCount.textContent=`${unread} unread`;adminMessages.innerHTML=msgs.length?msgs.slice(0,15).map(m=>`<div class="rounded-2xl border ${m.read?'border-white/10':'border-green-400/30 bg-green-400/5'} p-4"><div class="flex items-start justify-between gap-3"><div><p class="font-bold">${GS.escape(m.title||'Message from Admin')}</p><p class="mt-2 text-sm leading-6 text-gray-300">${GS.escape(m.text||'')}</p></div>${!m.read?'<span class="rounded-full bg-green-400/10 px-2 py-1 text-[10px] font-semibold text-green-300">NEW</span>':''}</div><p class="mt-2 text-[11px] text-gray-500">${m.createdAt?new Date(m.createdAt).toLocaleString():''}</p></div>`).join(''):'<p class="text-sm text-gray-400">No messages from admin.</p>';if(unread)GS.markWorkerMessagesRead(worker.id)}
+function renderCertificationStatus(){const cs=worker.certifications||[];certStatus.innerHTML=cs.length?cs.slice().reverse().map(c=>{const st=c.status||(c.verified?'approved':'pending');const cls=st==='approved'?'bg-green-400/10 text-green-300':st==='rejected'?'bg-red-400/10 text-red-300':'bg-yellow-400/10 text-yellow-300';return `<div class="mb-3 rounded-2xl border border-white/10 p-4"><div class="flex flex-wrap items-center justify-between gap-2"><p class="font-bold">${GS.escape(c.name||'Certificate')}</p><span class="rounded-full px-3 py-1 text-xs font-semibold ${cls}">${st==='approved'?'✓ Approved':st==='rejected'?'✕ Rejected':'⏳ Pending Approval'}</span></div>${st==='rejected'&&c.rejectionReason?`<p class="mt-2 text-sm text-red-300">Reason: ${GS.escape(c.rejectionReason)}</p>`:''}</div>`}).join(''):'<p class="text-sm text-gray-400">No certificates submitted.</p>'}
+function renderWorkerComplaints(){const cs=GS.complaints().filter(c=>c.workerId===worker.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));workerComplaints.innerHTML=cs.length?cs.map(c=>`<div class="rounded-2xl border border-white/10 p-4"><div class="flex flex-wrap items-center justify-between gap-2"><p class="font-bold">${GS.escape(c.subject||c.title||'Complaint')}</p><span class="rounded-full bg-white/5 px-3 py-1 text-xs">${GS.escape(c.status||'pending')}</span></div><p class="mt-2 text-sm text-gray-400">${GS.escape(c.description||c.text||'')}</p>${c.adminResponse?`<div class="mt-3 rounded-xl bg-green-400/5 p-3 text-sm"><b>Admin response:</b> ${GS.escape(c.adminResponse)}</div>`:''}</div>`).join(''):'<p class="text-sm text-gray-400">No complaints recorded for your account.</p>'}
+
+/* ============================= */
+/* LOGOUT */
+/* ============================= */
+
+logoutBtn.onclick = () => {
+
+localStorage.removeItem(
+GS.keys.workerSession
+);
+
+location.href =
+"worker-auth.html";
+
+};
+
+
+
+/* ============================= */
+/* DELETE ACCOUNT */
+/* ============================= */
+
+let deleteOtpValue = null;
+
+let deleteOtpExpiresAt = 0;
+
+
+
+function deleteMsgShow(
+text,
+ok=false
+){
+
+deleteMsg.textContent =
+text;
+
+
+deleteMsg.className =
+`mt-4 rounded-xl px-4 py-3 text-sm ${
+ok
+? "bg-green-400/10 text-green-300"
+: "bg-red-400/10 text-red-300"
+}`;
+
+
+deleteMsg.classList.remove("hidden");
+
+}
+
+
+
+/* NORMALIZE PHONE */
+
+function normalizePhone(value){
+
+return String(value || "")
+.replace(/\D/g,"")
+.slice(-10);
+
+}
+
+
+
+/* SEND OTP */
+
+sendDeleteOtp.onclick = () => {
+
+const enteredPhone =
+normalizePhone(
+deletePhone.value
+);
+
+
+const registeredPhone =
+normalizePhone(
+worker.phone ||
+worker.mobile ||
+worker.phoneNumber
+);
+
+
+if(!registeredPhone){
+
+return deleteMsgShow(
+"No registered phone number is linked to this worker account."
+);
+
+}
+
+
+if(
+!/^[6-9]\d{9}$/.test(
+enteredPhone
+)
+){
+
+return deleteMsgShow(
+"Enter a valid 10-digit phone number."
+);
+
+}
+
+
+if(
+enteredPhone !==
+registeredPhone
+){
+
+return deleteMsgShow(
+"The phone number does not match your registered worker account."
+);
+
+}
+
+
+deleteOtpValue =
+String(
+Math.floor(
+100000 +
+Math.random() * 900000
+)
+);
+
+
+deleteOtpExpiresAt =
+Date.now() + 300000;
+
+
+deleteOtpWrap.classList.remove(
+"hidden"
+);
+
+
+deleteOtp.value = "";
+
+
+deleteOtpHint.textContent =
+`Demo OTP: ${deleteOtpValue} · Valid for 5 minutes.`;
+
+
+deleteMsgShow(
+"OTP generated. Enter the OTP below to continue.",
+true
+);
+
+};
+
+
+
+/* CONFIRM DELETE */
+
+confirmDelete.onclick = () => {
+
+const enteredOtp =
+String(
+deleteOtp.value || ""
+)
+.replace(/\D/g,"");
+
+
+if(
+!deleteOtpValue ||
+Date.now() >
+deleteOtpExpiresAt
+){
+
+deleteOtpValue = null;
+
+return deleteMsgShow(
+"OTP has expired. Please request a new OTP."
+);
+
+}
+
+
+if(
+enteredOtp !==
+deleteOtpValue
+){
+
+return deleteMsgShow(
+"Incorrect OTP. Account deletion was not completed."
+);
+
+}
+
+
+if(
+!confirm(
+"This will permanently delete your worker account, profile, services and worker session. Continue?"
+)
+){
+
+return;
+
+}
+
+
+
+/* DELETE WORKER */
+
+const allWorkers =
+GS.workers();
+
+
+const remainingWorkers =
+allWorkers.filter(
+w => w.id !== worker.id
+);
+
+
+GS.saveWorkers(
+remainingWorkers
+);
+
+
+
+/* DELETE BOOKINGS */
+
+const allBookings =
+GS.bookings();
+
+
+const remainingBookings =
+allBookings.filter(
+b => b.workerId !== worker.id
+);
+
+
+GS.saveBookings(
+remainingBookings
+);
+
+
+
+/* DELETE SESSION */
+
+localStorage.removeItem(
+GS.keys.workerSession
+);
+
+
+deleteOtpValue = null;
+
+
+deleteMsgShow(
+"Account deleted successfully. Redirecting...",
+true
+);
+
+
+setTimeout(
+() => {
+
+location.href =
+"worker-auth.html";
+
+},
+900
+);
+
+};
+
+
+
+/* ============================= */
+/* INITIAL RENDER */
+/* ============================= */
+
+renderSelected();
+
+renderGigRequests();
+
+renderNotifications();
+renderAdminMessages();
+renderCertificationStatus();
+renderWorkerComplaints();
+
+
+/* ============================= */
+/* LIVE REFRESH */
+/* ============================= */
+
+setInterval(() => {
+
+const fresh =
+GS.currentWorker();
+
+
+if(!fresh)
+return;
+
+
+worker.notifications =
+fresh.notifications || [];
+
+
+worker.services =
+fresh.services ||
+worker.services ||
+[];
+
+
+refreshWorkerStats();
+
+renderGigRequests();
+
+renderNotifications();
+renderAdminMessages();
+renderCertificationStatus();
+renderWorkerComplaints();
+
+},1000);
+
+
+
+/* ============================= */
+/* STORAGE SYNC */
+/* ============================= */
+
+window.addEventListener(
+"storage",
+e => {
+
+if(
+e.key === GS.keys.bookings ||
+e.key === GS.keys.workers
+){
+
+const fresh =
+GS.currentWorker();
+
+
+if(fresh){
+
+worker.notifications =
+fresh.notifications || [];
+
+
+renderGigRequests();
+
+renderNotifications();
+
+}
+
+}
+
+}
+);
+
+</script>
+
+
+<script src="./griahsathi-language.js"></script>
+<script src="./griahsathi-ai.js"></script>
+
+</body>
+</html>

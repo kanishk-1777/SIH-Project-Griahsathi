@@ -1,0 +1,1006 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking | Griahsathi</title>
+
+  <link rel="stylesheet" href="./output.css">
+  <script src="./griahsathi-core.js"></script>
+  <script src="./navbar.js" defer></script>
+
+  <style>
+    body { background:#080B10; color:#fff; }
+    .card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.10); }
+    .worker-card { transition:transform .25s ease,border-color .25s ease,background .25s ease; }
+    .worker-card:hover { transform:translateY(-4px); border-color:rgba(74,222,128,.35); background:rgba(74,222,128,.04); }
+    .status-line { position:relative; }
+    .status-line::before { content:""; position:absolute; left:12px; top:26px; bottom:-18px; width:2px; background:rgba(255,255,255,.10); }
+    .status-line:last-child::before { display:none; }
+    .star-btn { transition:transform .15s ease,background .15s ease; }
+    .star-btn:hover { transform:scale(1.08); }
+    .light-mode { background:#f5f7f6 !important; color:#111827 !important; }
+    .light-mode .card { background:rgba(255,255,255,.82); border-color:rgba(0,0,0,.08); }
+    .light-mode input,.light-mode textarea,.light-mode select { background:#fff !important; color:#111827 !important; border-color:rgba(0,0,0,.12) !important; }
+    .light-mode .muted { color:#6b7280 !important; }
+  </style>
+</head>
+
+<body class="antialiased">
+  <div id="site-header"></div>
+
+  <main class="px-5 pb-20 pt-28">
+    <div class="mx-auto max-w-7xl">
+
+      <section class="relative overflow-hidden rounded-3xl border border-white/5 bg-white/[.01] px-6 py-12 sm:px-10">
+        <div class="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-green-500/10 blur-3xl"></div>
+        <div class="pointer-events-none absolute -right-24 top-10 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl"></div>
+
+        <div class="relative">
+          <p class="text-4xl uppercase tracking-widest text-green-400" style="font-family:'Pacifico',cursive;">Booking</p>
+          <h1 class="mt-4 max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Book a worker. Track everything.
+          </h1>
+          <p class="mt-5 max-w-3xl text-base leading-8 text-gray-400 sm:text-lg">
+            Choose a registered worker, send your request, and track the complete journey here — Pending, Accepted, Rejected, Completed and Review.
+          </p>
+        </div>
+      </section>
+
+      <div id="loginNotice" class="mt-6 hidden rounded-2xl border border-yellow-400/20 bg-yellow-400/5 px-5 py-4 text-sm text-yellow-200"></div>
+
+      <section class="mt-8 grid gap-8 lg:grid-cols-[1.15fr_.85fr]">
+        <div>
+          <div class="card rounded-3xl p-6 sm:p-8">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[.2em] text-green-400">Choose your worker</p>
+                <h2 class="mt-2 text-2xl font-bold">Registered Workers</h2>
+                <p class="mt-2 text-sm text-gray-400">Every registered worker is shown here. Availability only controls whether they can be selected for a new booking.</p>
+              </div>
+              <a href="find-worker.html" class="text-sm font-semibold text-green-400 hover:text-green-300">Find Worker →</a>
+            </div>
+
+            <div id="workerGrid" class="mt-6 grid gap-4"></div>
+          </div>
+        </div>
+
+        <aside class="card h-fit rounded-3xl p-6 sm:p-8">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[.2em] text-green-400">New request</p>
+              <h2 class="mt-2 text-2xl font-bold">Send Booking Request</h2>
+            </div>
+            <span id="selectedBadge" class="hidden rounded-full border border-green-400/20 bg-green-400/10 px-3 py-1 text-xs font-semibold text-green-300">Worker Selected</span>
+          </div>
+
+          <div id="selectedWorkerBox" class="mt-5 rounded-2xl border border-white/10 bg-white/[.02] p-4 text-sm text-gray-400">
+            No worker selected yet.
+          </div>
+
+          <div class="mt-5 grid gap-4">
+            <select id="service" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+              <option value="">Select Service</option>
+            </select>
+
+            <input id="customerName" placeholder="Your name" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <input id="customerPhone" maxlength="10" placeholder="10-digit phone number" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <input id="city" placeholder="City" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <input id="district" placeholder="District" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <input id="state" placeholder="State" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <input id="pincode" maxlength="6" placeholder="6-digit PIN code" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <input id="date" type="date" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <input id="time" type="time" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none">
+            <textarea id="notes" rows="4" placeholder="Describe the work you need (optional)" class="rounded-xl border border-white/10 bg-white/[.04] px-4 py-3 outline-none"></textarea>
+
+            <button id="sendRequest" type="button" class="rounded-xl bg-green-500 px-6 py-4 font-bold text-black transition hover:-translate-y-0.5 hover:bg-green-400 disabled:cursor-not-allowed disabled:opacity-50">
+              Send Booking Request
+            </button>
+            <div id="requestMsg" class="hidden rounded-xl px-4 py-3 text-sm"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="mt-10">
+        <div class="mb-5">
+          <p class="text-sm font-semibold uppercase tracking-[.2em] text-green-400">Live updates</p>
+          <h2 class="mt-2 text-3xl font-bold">My Bookings & Status</h2>
+          <p class="mt-2 text-gray-400">Worker actions are reflected here automatically.</p>
+        </div>
+        <div id="bookingHistory" class="space-y-5"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="selectionModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 px-5 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-3xl border border-white/10 bg-[#0f141b] p-7 shadow-2xl">
+      <div class="text-4xl">✅</div>
+      <h3 class="mt-4 text-2xl font-bold">Worker Selected</h3>
+      <p id="selectionText" class="mt-2 text-gray-400"></p>
+      <div class="mt-6 flex gap-3">
+        <button id="changeWorker" class="flex-1 rounded-xl border border-white/10 px-4 py-3 font-semibold">Change</button>
+        <button id="confirmWorker" class="flex-1 rounded-xl bg-green-500 px-4 py-3 font-bold text-black">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="pointer-events-none fixed right-5 top-24 z-[110] hidden max-w-sm rounded-2xl border border-green-400/30 bg-[#0f1712] px-5 py-4 shadow-2xl">
+    <p id="toastTitle" class="font-bold text-green-300">Success</p>
+    <p id="toastText" class="mt-1 text-sm text-gray-300"></p>
+  </div>
+
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const requestedService = qs.get('service') || '';
+    const requestedWorkerId = qs.get('worker') || '';
+
+    const workerGrid = document.getElementById('workerGrid');
+    const bookingHistory = document.getElementById('bookingHistory');
+    const loginNotice = document.getElementById('loginNotice');
+    const selectedWorkerBox = document.getElementById('selectedWorkerBox');
+    const selectedBadge = document.getElementById('selectedBadge');
+    const serviceSelect = document.getElementById('service');
+    const sendRequest = document.getElementById('sendRequest');
+
+    let selectedWorker = null;
+    let pendingWorker = null;
+    let toastTimer = null;
+
+    function esc(value) {
+      return GS.escape ? GS.escape(value) : String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    }
+
+    function loggedCustomer() {
+      // Primary source: the multi-customer session.
+      try {
+        const current = JSON.parse(
+          localStorage.getItem('griahsathi-current-customer') || 'null'
+        );
+        const customers = JSON.parse(
+          localStorage.getItem('griahsathi-customers') || '[]'
+        );
+
+        if (current && Array.isArray(customers)) {
+          if (current.id) {
+            const fresh = customers.find(
+              c => String(c.id) === String(current.id)
+            );
+            if (fresh) return fresh;
+          }
+
+          if (current.email) {
+            const email = String(current.email).toLowerCase();
+            const byEmail = customers.find(
+              c => String(c.email || '').toLowerCase() === email
+            );
+            if (byEmail) return byEmail;
+          }
+
+          const currentPhone = String(current.phone || '').replace(/\D/g, '');
+          if (currentPhone) {
+            const byPhone = customers.find(
+              c => String(c.phone || '').replace(/\D/g, '') === currentPhone
+            );
+            if (byPhone) return byPhone;
+          }
+        }
+      } catch (_) {}
+
+      // Legacy compatibility for older Griahsathi data.
+      try {
+        if (typeof GS.currentLoggedInCustomer === 'function') {
+          const c = GS.currentLoggedInCustomer();
+          if (c) return c;
+        }
+      } catch (_) {}
+
+      try {
+        const session = JSON.parse(localStorage.getItem('griahsathi-logged-in') || 'null');
+        const customer = JSON.parse(localStorage.getItem('griahsathi-customer') || 'null');
+        if (!session || !customer) return null;
+        if (
+          (session.email && customer.email && session.email === customer.email) ||
+          (session.phone && customer.phone && session.phone === customer.phone)
+        ) return customer;
+      } catch (_) {}
+
+      return null;
+    }
+
+    function currentFormCustomer() {
+      const c = loggedCustomer() || {};
+      return {
+        name: document.getElementById('customerName').value.trim() || c.name || '',
+        phone: document.getElementById('customerPhone').value.trim() || c.phone || '',
+        city: document.getElementById('city').value.trim() || c.city || '',
+        district: document.getElementById('district').value.trim() || c.district || '',
+        state: document.getElementById('state').value.trim() || c.state || '',
+        pincode: document.getElementById('pincode').value.trim() || c.pincode || ''
+      };
+    }
+
+    function showToast(title, message) {
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastText').textContent = message;
+      const toast = document.getElementById('toast');
+      toast.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add('hidden'), 4500);
+    }
+
+    function statusMeta(status) {
+      const map = {
+        pending: { label:'Pending', color:'yellow', text:'Waiting for the worker to accept or reject your request.' },
+        accepted: { label:'Accepted', color:'green', text:'The worker accepted your gig. The task can now be performed.' },
+        rejected: { label:'Rejected', color:'red', text:'The worker rejected this request.' },
+        completed: { label:'Completed', color:'blue', text:'The worker marked the task completed. You can now submit your rating and review.' }
+      };
+      return map[status] || { label:'Unknown', color:'gray', text:'' };
+    }
+
+    function statusClasses(status) {
+      const colors = {
+        pending: 'border-yellow-400/20 bg-yellow-400/5 text-yellow-200',
+        accepted: 'border-green-400/20 bg-green-400/5 text-green-200',
+        rejected: 'border-red-400/20 bg-red-400/5 text-red-200',
+        completed: 'border-blue-400/20 bg-blue-400/5 text-blue-200'
+      };
+      return colors[status] || 'border-white/10 bg-white/[.02] text-gray-300';
+    }
+
+    function canonicalServiceSlug(value) {
+      return (GS.slugify ? GS.slugify(value) : String(value || '').toLowerCase().trim());
+    }
+
+    function normalizeService(worker, slug) {
+      const list = Array.isArray(worker?.services) ? worker.services : [];
+      const target = canonicalServiceSlug(slug);
+
+      // STRICT MATCH:
+      // A worker is considered registered for a service only when the
+      // worker's stored service slug exactly matches the selected service slug.
+      for (const item of list) {
+        let storedSlug = '';
+
+        if (typeof item === 'string') {
+          storedSlug = canonicalServiceSlug(item);
+        } else if (item && typeof item === 'object') {
+          storedSlug = canonicalServiceSlug(
+            item.slug || item.serviceSlug || item.service || item.title || ''
+          );
+        }
+
+        if (storedSlug && storedSlug === target) {
+          return typeof item === 'object'
+            ? { ...item, slug: storedSlug }
+            : { slug: storedSlug, price: 0, priceType: 'fixed' };
+        }
+      }
+
+      return null;
+    }
+
+    function selectedWorkerService() {
+      if (!selectedWorker) return null;
+      return normalizeService(selectedWorker, serviceSelect.value);
+    }
+
+    function renderServiceOptions() {
+      const services = Array.isArray(window.SERVICE_CATALOG) ? window.SERVICE_CATALOG : (typeof SERVICE_CATALOG !== 'undefined' ? SERVICE_CATALOG : []);
+      const seen = new Set();
+      let html = '<option value="">Select Service</option>';
+      services.forEach(s => {
+        if (!seen.has(s.slug)) {
+          seen.add(s.slug);
+          html += `<option value="${esc(s.slug)}">${esc(s.title)}</option>`;
+        }
+      });
+      serviceSelect.innerHTML = html;
+      if (requestedService) serviceSelect.value = requestedService;
+    }
+
+    function renderWorkers() {
+      const selectedServiceSlug = canonicalServiceSlug(serviceSelect.value);
+
+      const allWorkers = GS.workers()
+        .slice()
+        .sort((a,b) =>
+          Number(Boolean(b.available)) - Number(Boolean(a.available)) ||
+          String(a.name || '').localeCompare(String(b.name || ''))
+        );
+
+      // Only workers registered for the selected service are shown.
+      const workers = selectedServiceSlug
+        ? allWorkers.filter(worker => normalizeService(worker, selectedServiceSlug))
+        : [];
+
+      if (!selectedServiceSlug) {
+        workerGrid.innerHTML = `
+          <div class="rounded-2xl border border-white/10 bg-white/[.02] p-5">
+            <p class="font-semibold">Select a service first</p>
+            <p class="mt-2 text-sm text-gray-400">
+              Only workers registered for the selected service will appear here.
+            </p>
+          </div>`;
+        return;
+      }
+
+      if (!workers.length) {
+        workerGrid.innerHTML = `
+          <div class="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+            <p class="font-semibold text-yellow-200">No registered workers for this service</p>
+            <p class="mt-2 text-sm text-gray-400">
+              No worker has registered for <strong>${esc(GS.service?.(selectedServiceSlug)?.title || selectedServiceSlug)}</strong> yet.
+            </p>
+          </div>`;
+        return;
+      }
+
+      workerGrid.innerHTML = workers.map(worker => {
+        const available = worker.available !== false;
+        const rating = Number(worker.ratingAverage ?? worker.rating ?? 0).toFixed(1);
+        const reviews = Number(
+          worker.totalRatings ??
+          (Array.isArray(worker.reviews) ? worker.reviews.length : 0)
+        );
+        const chosen =
+          selectedWorker &&
+          String(selectedWorker.id) === String(worker.id);
+
+        const profileLink =
+          `worker-profile.html?id=${encodeURIComponent(worker.id)}`;
+
+        const selectedService = normalizeService(worker, selectedServiceSlug);
+        const price = Number(selectedService?.price || 0);
+
+        return `
+          <article class="worker-card rounded-2xl border ${
+            chosen
+              ? 'border-green-400/40 bg-green-400/5'
+              : 'border-white/10 bg-white/[.02]'
+          } p-5">
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+
+              <div class="flex gap-4">
+
+                <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-green-400/10 text-2xl">
+                  ${
+                    worker.profilePhoto
+                      ? `<img src="${esc(worker.profilePhoto)}"
+                               alt="${esc(worker.name || 'Worker')}"
+                               class="h-full w-full object-cover">`
+                      : '👤'
+                  }
+                </div>
+
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="text-lg font-bold">
+                      ${esc(worker.name || 'Registered Worker')}
+                    </h3>
+
+                    <span class="rounded-full border px-2.5 py-1 text-[11px] font-semibold ${
+                      available
+                        ? 'border-green-400/20 bg-green-400/10 text-green-300'
+                        : 'border-red-400/20 bg-red-400/10 text-red-300'
+                    }">
+                      ${available ? '● Available' : '○ Currently unavailable'}
+                    </span>
+                  </div>
+
+                  <p class="mt-1 text-sm text-gray-400">
+                    ${esc(
+                      [worker.city, worker.state]
+                        .filter(Boolean)
+                        .join(', ') || 'Location not provided'
+                    )}
+                  </p>
+
+                  <div class="mt-3 flex flex-wrap gap-3 text-xs text-gray-300">
+                    <span>
+                      ⭐ ${rating} (${reviews})
+                    </span>
+
+                    ${
+                      GS.certified && GS.certified(worker)
+                        ? '<span class="text-green-400">✓ Certified</span>'
+                        : ''
+                    }
+                  </div>
+
+                  <p class="mt-2 text-sm font-semibold text-green-400">
+                    ₹${price}${
+                      selectedService?.priceType === 'hourly'
+                        ? '/hr'
+                        : selectedService?.priceType === 'daily'
+                          ? '/day'
+                          : ''
+                    }
+                  </p>
+
+                  <p class="mt-1 text-xs text-gray-500">
+                    Registered service: ${esc(
+                      GS.service?.(selectedServiceSlug)?.title ||
+                      selectedServiceSlug
+                    )}
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2 sm:flex-col sm:items-end">
+
+                <a
+                  href="${profileLink}"
+                  class="rounded-xl border border-green-400/30 px-3 py-2 text-xs font-semibold text-green-400 hover:bg-green-400/10">
+                  View Profile
+                </a>
+
+                <button
+                  type="button"
+                  data-select-worker="${esc(worker.id)}"
+                  class="rounded-xl px-4 py-2 text-xs font-bold ${
+                    available
+                      ? 'bg-green-500 text-black hover:bg-green-400'
+                      : 'border border-white/10 text-gray-500'
+                  }"
+                  ${available ? '' : 'disabled'}
+                >
+                  ${chosen ? 'Selected ✓' : 'Select Worker'}
+                </button>
+
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+
+      document.querySelectorAll('[data-select-worker]').forEach(btn => {
+        btn.onclick = () => {
+          const worker = GS.workers().find(
+            w => String(w.id) === String(btn.dataset.selectWorker)
+          );
+
+          if (!worker) return;
+
+          const currentService = canonicalServiceSlug(serviceSelect.value);
+
+          // Extra safety: never allow selection unless the worker
+          // is registered for the currently selected service.
+          if (!normalizeService(worker, currentService)) {
+            showRequestMsg(
+              'This worker is not registered for the selected service.',
+              false
+            );
+            return;
+          }
+
+          if (worker.available === false) {
+            showRequestMsg(
+              'This worker is currently unavailable.',
+              false
+            );
+            return;
+          }
+
+          pendingWorker = worker;
+
+          document.getElementById('selectionText').textContent =
+            `You selected ${worker.name} for ${
+              GS.service?.(currentService)?.title || currentService
+            }. Continue to use this worker for the new booking request.`;
+
+          document.getElementById('selectionModal').classList.remove('hidden');
+          document.getElementById('selectionModal').classList.add('flex');
+        };
+      });
+    }
+
+    function setSelectedWorker(worker) {
+      selectedWorker = worker;
+      selectedWorkerBox.innerHTML = `
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="font-bold text-white">${esc(worker.name)}</p>
+            <p class="mt-1 text-xs text-gray-400">${esc([worker.city,worker.state].filter(Boolean).join(', ') || 'Location not provided')}</p>
+          </div>
+          <a href="worker-profile.html?id=${encodeURIComponent(worker.id)}" class="text-xs font-semibold text-green-400">Profile →</a>
+        </div>`;
+      selectedBadge.classList.remove('hidden');
+      renderWorkers();
+    }
+
+    function allCustomerBookings() {
+      const customer = loggedCustomer();
+      if (!customer) return [];
+
+      const customerId = String(customer.id || '');
+      const phone = String(customer.phone || '').replace(/\D/g, '');
+      const email = String(customer.email || '').toLowerCase();
+
+      return GS.bookings().filter(b => {
+        // New records: exact customer ID is the primary ownership key.
+        if (customerId && b.customerId) {
+          return String(b.customerId) === customerId;
+        }
+
+        // Legacy records created before customerId existed.
+        if (b.customerId) return false;
+
+        const bp = String(b.customerPhone || '').replace(/\D/g, '');
+        const be = String(b.customerEmail || '').toLowerCase();
+
+        return (phone && bp && phone === bp) || (email && be && email === be);
+      }).sort(
+        (a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+      );
+    }
+
+    function timeline(booking) {
+      const stages = [
+        ['pending','Request Sent'],
+        ['accepted','Accepted'],
+        ['completed','Task Completed']
+      ];
+      if (booking.status === 'rejected') stages.push(['rejected','Rejected']);
+
+      return `<div class="mt-5 grid gap-3 sm:grid-cols-3">
+        ${stages.map(([code,label]) => {
+          const active = code === booking.status || (code === 'pending' && ['accepted','completed'].includes(booking.status)) || (code === 'accepted' && booking.status === 'completed');
+          return `<div class="status-line rounded-2xl border ${active ? 'border-green-400/20 bg-green-400/5' : 'border-white/10 bg-white/[.02]'} p-4">
+            <div class="flex items-center gap-3"><span class="flex h-6 w-6 items-center justify-center rounded-full ${active ? 'bg-green-500 text-black' : 'bg-white/10 text-gray-500'} text-xs font-bold">${active ? '✓' : '•'}</span><span class="text-sm font-semibold">${label}</span></div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+
+    function renderReviewForBooking(booking, worker) {
+      if (booking.status !== 'completed') return '';
+      if (booking.reviewSubmitted) {
+        const stars = Math.max(0, Math.min(5, Number(booking.rating || 0)));
+        return `<div class="mt-6 rounded-2xl border border-green-400/20 bg-green-400/5 p-5">
+          <p class="text-xs font-semibold uppercase tracking-[.2em] text-green-400">Review Submitted</p>
+          <div class="mt-3 text-2xl text-yellow-300">${'★'.repeat(stars)}<span class="text-gray-600">${'★'.repeat(5-stars)}</span></div>
+          <p class="mt-3 text-sm leading-6 text-gray-300">${esc(booking.review || 'No written review.')}</p>
+        </div>`;
+      }
+
+      return `<div class="mt-6 rounded-2xl border border-blue-400/20 bg-blue-400/5 p-5" data-review-box="${esc(booking.id)}">
+        <p class="text-xs font-semibold uppercase tracking-[.2em] text-blue-300">Task Completed</p>
+        <h4 class="mt-2 text-xl font-bold">Rate & Review ${esc(worker?.name || 'this worker')}</h4>
+        <p class="mt-1 text-sm text-gray-400">Your review will be added to the worker's public profile.</p>
+        <div class="mt-4 flex flex-wrap gap-2" data-stars="${esc(booking.id)}">
+          ${[1,2,3,4,5].map(n => `<button type="button" data-star="${n}" data-booking="${esc(booking.id)}" class="star-btn rounded-xl border border-white/10 px-3 py-2 text-2xl text-yellow-300 hover:bg-yellow-400/10">☆</button>`).join('')}
+        </div>
+        <textarea data-review-text="${esc(booking.id)}" rows="4" class="mt-4 w-full rounded-xl border border-white/10 bg-white/[.04] px-4 py-3" placeholder="Write your experience..."></textarea>
+        <button type="button" data-submit-review="${esc(booking.id)}" class="mt-4 rounded-xl bg-green-500 px-5 py-3 font-bold text-black hover:bg-green-400">Submit Rating & Review</button>
+        <p data-review-msg="${esc(booking.id)}" class="mt-3 hidden rounded-xl px-4 py-3 text-sm"></p>
+      </div>`;
+    }
+
+    function renderBookingHistory() {
+      const customer = loggedCustomer();
+      if (!customer) {
+        bookingHistory.innerHTML = `<div class="card rounded-3xl p-7"><p class="font-bold">Log in to see your bookings</p><p class="mt-2 text-sm text-gray-400">Once you log in, every request you send will appear here with live status updates and the review section after completion.</p></div>`;
+        return;
+      }
+
+      const bookings = allCustomerBookings();
+      if (!bookings.length) {
+        bookingHistory.innerHTML = `<div class="card rounded-3xl p-7"><p class="font-bold">No bookings yet</p><p class="mt-2 text-sm text-gray-400">Select a registered worker above and send your first booking request.</p></div>`;
+        return;
+      }
+
+      bookingHistory.innerHTML = bookings.map(booking => {
+        const worker = GS.workers().find(w => String(w.id) === String(booking.workerId));
+        const meta = statusMeta(booking.status);
+        const statusClass = statusClasses(booking.status);
+        const service = GS.service ? GS.service(booking.service) : null;
+        return `<article class="card rounded-3xl p-6 sm:p-7">
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="text-xs font-semibold uppercase tracking-[.2em] text-green-400">${esc(service?.title || booking.service || 'Service')}</p>
+                <span class="rounded-full border px-3 py-1 text-xs font-semibold ${statusClass}">${meta.label}</span>
+              </div>
+              <h3 class="mt-2 text-2xl font-bold">${esc(worker?.name || booking.workerName || 'Worker')}</h3>
+              <p class="mt-1 text-sm text-gray-400">Booking ID: ${esc(booking.id)}</p>
+            </div>
+            <a href="${worker ? `worker-profile.html?id=${encodeURIComponent(worker.id)}` : '#'}" class="inline-flex rounded-xl border border-green-400/30 px-4 py-2 text-sm font-semibold text-green-400 hover:bg-green-400/10">View Worker Profile →</a>
+          </div>
+
+          <p class="mt-4 text-sm text-gray-300">${esc(meta.text)}</p>
+          ${timeline(booking)}
+
+          <div class="mt-5 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+            <div class="rounded-xl border border-white/10 p-3"><span class="text-gray-500">Date</span><p class="mt-1 font-semibold">${esc(booking.date || '-')}</p></div>
+            <div class="rounded-xl border border-white/10 p-3"><span class="text-gray-500">Time</span><p class="mt-1 font-semibold">${esc(booking.time || '-')}</p></div>
+            <div class="rounded-xl border border-white/10 p-3"><span class="text-gray-500">Price</span><p class="mt-1 font-semibold text-green-400">₹${Number(booking.price || 0)}${booking.priceType === 'hourly' ? '/hr' : booking.priceType === 'daily' ? '/day' : ''}</p></div>
+            <div class="rounded-xl border border-white/10 p-3"><span class="text-gray-500">Last Updated</span><p class="mt-1 font-semibold">${new Date(booking.updatedAt || booking.createdAt || Date.now()).toLocaleString()}</p></div>
+          </div>
+
+          ${booking.notes ? `<div class="mt-4 rounded-xl border border-white/10 bg-white/[.02] p-4 text-sm"><span class="text-gray-500">Job details</span><p class="mt-1 text-gray-300">${esc(booking.notes)}</p></div>` : ''}
+          ${renderReviewForBooking(booking, worker)}
+        </article>`;
+      }).join('');
+
+      bindReviews();
+    }
+
+    function bindReviews() {
+      document.querySelectorAll('[data-star]').forEach(btn => {
+        btn.onclick = () => {
+          const bookingId = btn.dataset.booking;
+          const rating = Number(btn.dataset.star);
+          const starsWrap = document.querySelector(`[data-stars="${CSS.escape(bookingId)}"]`);
+
+          if (starsWrap) {
+            starsWrap.dataset.rating = String(rating);
+            starsWrap.querySelectorAll('[data-star]').forEach(star => {
+              star.textContent = Number(star.dataset.star) <= rating ? '★' : '☆';
+            });
+          }
+        };
+      });
+
+      document.querySelectorAll('[data-submit-review]').forEach(btn => {
+        btn.onclick = () => submitReview(btn.dataset.submitReview);
+      });
+    }
+
+    function submitReview(bookingId) {
+      const customer = loggedCustomer();
+      const bookings = GS.bookings();
+      const booking = bookings.find(b => String(b.id) === String(bookingId));
+      const msg = document.querySelector(`[data-review-msg="${CSS.escape(bookingId)}"]`);
+
+      if (!customer) return showReviewMsg(msg, 'Please log in before submitting a review.', false);
+      if (!booking || booking.status !== 'completed') return showReviewMsg(msg, 'This booking is not completed yet.', false);
+      // Customers can review only their own completed bookings.
+      const customerId = String(customer.id || '');
+      const ownsBooking =
+        (customerId && booking.customerId &&
+          String(booking.customerId) === customerId) ||
+        (!booking.customerId && (
+          (
+            customer.phone &&
+            String(booking.customerPhone || '').replace(/\D/g, '') ===
+            String(customer.phone || '').replace(/\D/g, '')
+          ) ||
+          (
+            customer.email &&
+            String(booking.customerEmail || '').toLowerCase() ===
+            String(customer.email || '').toLowerCase()
+          )
+        ));
+
+      if (!ownsBooking) {
+        return showReviewMsg(
+          msg,
+          "You cannot review another customer's booking.",
+          false
+        );
+      }
+
+      if (booking.reviewSubmitted) return renderBookingHistory();
+
+      const starsWrap = document.querySelector(`[data-stars="${CSS.escape(bookingId)}"]`);
+      const rating = Number(starsWrap?.dataset.rating || 0);
+      const textEl = document.querySelector(`[data-review-text="${CSS.escape(bookingId)}"]`);
+      const reviewText = (textEl?.value || '').trim();
+
+      if (!rating) return showReviewMsg(msg, 'Please select a rating from 1 to 5 stars.', false);
+      if (reviewText.length < 3) return showReviewMsg(msg, 'Please write a short review.', false);
+
+      const worker = GS.workers().find(w => String(w.id) === String(booking.workerId));
+      if (!worker) return showReviewMsg(msg, 'Worker profile could not be found.', false);
+
+      worker.reviews = Array.isArray(worker.reviews) ? worker.reviews : [];
+      worker.reviews.push({
+        customerId: customer.id || '',
+        customerName: customer.name || 'Customer',
+        rating,
+        review: reviewText,
+        bookingId: booking.id,
+        createdAt: new Date().toISOString()
+      });
+
+      if (typeof GS.syncWorkerRatings === 'function') GS.syncWorkerRatings(worker);
+
+      worker.notifications = Array.isArray(worker.notifications) ? worker.notifications : [];
+      worker.notifications.push({
+        title: 'New Customer Review',
+        text: `${GS.service?.(booking.service)?.title || booking.service} · ${customer.name || 'Customer'} · ${rating}/5`,
+        at: new Date().toISOString(),
+        bookingId: booking.id,
+        type: 'review'
+      });
+
+      GS.saveWorker(worker);
+      booking.reviewSubmitted = true;
+      booking.rating = rating;
+      booking.review = reviewText;
+      booking.reviewedAt = new Date().toISOString();
+      booking.updatedAt = new Date().toISOString();
+      GS.saveBookings(bookings);
+
+      showToast('Review submitted', 'Your rating and review have been added to the worker profile.');
+      renderBookingHistory();
+    }
+
+    function showReviewMsg(el, text, ok) {
+      if (!el) return;
+      el.textContent = text;
+      el.className = `mt-3 rounded-xl px-4 py-3 text-sm ${ok ? 'bg-green-400/10 text-green-300' : 'bg-red-400/10 text-red-300'}`;
+      el.classList.remove('hidden');
+    }
+
+    let formPrefilled = false;
+
+    function updateLoginNotice() {
+      const customer = loggedCustomer();
+      const fields = {
+        customerName: customer?.name || '',
+        customerPhone: customer?.phone || '',
+        city: customer?.city || '',
+        district: customer?.district || '',
+        state: customer?.state || '',
+        pincode: customer?.pincode || ''
+      };
+
+      if (customer) {
+        loginNotice.classList.add('hidden');
+
+        // Prefill only once. Do NOT overwrite anything the customer has typed.
+        if (!formPrefilled) {
+          Object.entries(fields).forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el && !el.value) el.value = value;
+          });
+          formPrefilled = true;
+        }
+        return;
+      }
+
+      loginNotice.classList.remove('hidden');
+      loginNotice.innerHTML = `You can browse workers without logging in, but <strong>you must log in before sending a booking request</strong>. <a href="login.html" class="font-bold underline">Log in now →</a>`;
+    }
+
+    function sendBooking() {
+      const customer = loggedCustomer();
+      if (!customer) {
+        showToast('Login required', 'Please log in before sending your booking request.');
+        setTimeout(() => { location.href = 'login.html?redirect=' + encodeURIComponent(location.href); }, 700);
+        return;
+      }
+
+      if (!serviceSelect.value) {
+        return showRequestMsg('Please select a service.', false);
+      }
+
+      if (!selectedWorker) {
+        return showRequestMsg('Please select a worker registered for this service.', false);
+      }
+
+      if (selectedWorker.available === false) {
+        return showRequestMsg('This worker is currently unavailable.', false);
+      }
+
+      const normalizedService = canonicalServiceSlug(serviceSelect.value);
+
+      if (!normalizeService(selectedWorker, normalizedService)) {
+        return showRequestMsg(
+          'This worker is not registered for the selected service. Please choose another worker.',
+          false
+        );
+      }
+
+      const formCustomer = currentFormCustomer();
+      const phone = String(formCustomer.phone).replace(/\D/g,'');
+      const pin = String(formCustomer.pincode).replace(/\D/g,'');
+
+      if (!/^\d{10}$/.test(phone)) return showRequestMsg('Enter a valid 10-digit phone number.', false);
+      if (!/^\d{6}$/.test(pin)) return showRequestMsg('Enter a valid 6-digit PIN code.', false);
+      if (!document.getElementById('date').value || !document.getElementById('time').value) return showRequestMsg('Choose the booking date and time.', false);
+      if (new Date(`${document.getElementById('date').value}T${document.getElementById('time').value}`) < new Date()) return showRequestMsg('Choose a future date and time.', false);
+
+      const serviceData = selectedWorkerService() || { price:0, priceType:'fixed' };
+      const normalizedServiceSlug = canonicalServiceSlug(serviceSelect.value);
+      const customerId = String(customer.id || '');
+
+      const existing = GS.bookings().find(b => {
+        const sameWorker =
+          String(b.workerId) === String(selectedWorker.id);
+
+        const sameService =
+          canonicalServiceSlug(b.service) === normalizedServiceSlug;
+
+        const active =
+          ['pending', 'accepted'].includes(b.status);
+
+        if (customerId && b.customerId) {
+          return (
+            sameWorker &&
+            String(b.customerId) === customerId &&
+            sameService &&
+            active
+          );
+        }
+
+        // Legacy bookings without customerId.
+        const samePhone =
+          String(b.customerPhone || '').replace(/\D/g, '') === phone;
+
+        const sameEmail =
+          String(b.customerEmail || '').toLowerCase() ===
+          String(customer.email || '').toLowerCase();
+
+        return (
+          !b.customerId &&
+          sameWorker &&
+          (samePhone || sameEmail) &&
+          sameService &&
+          active
+        );
+      });
+
+      if (existing) {
+        showRequestMsg('You already have an active booking with this worker for this service.', false);
+        renderBookingHistory();
+        return;
+      }
+
+      const now = new Date().toISOString();
+      const booking = {
+        id: GS.uid ? GS.uid('BOOK') : `BOOK-${Date.now()}`,
+        customerId: customer.id || `LEGACY-${phone}`,
+        service: normalizedServiceSlug,
+        workerId: selectedWorker.id,
+        workerName: selectedWorker.name || 'Worker',
+        customerName: formCustomer.name || customer.name || 'Customer',
+        customerPhone: phone,
+        customerEmail: customer.email || '',
+        customerLocation: { city:formCustomer.city, district:formCustomer.district, state:formCustomer.state, pincode:pin },
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        notes: document.getElementById('notes').value.trim(),
+        price: Number(serviceData.price || 0),
+        priceType: serviceData.priceType || 'fixed',
+        status: 'pending',
+        createdAt: now,
+        updatedAt: now
+      };
+
+      const bookings = GS.bookings();
+      bookings.push(booking);
+      GS.saveBookings(bookings);
+
+      selectedWorker.notifications = Array.isArray(selectedWorker.notifications) ? selectedWorker.notifications : [];
+      selectedWorker.notifications.push({
+        title:'New Gig Request',
+        text:`${GS.service?.(normalizedServiceSlug)?.title || normalizedServiceSlug} · ${booking.customerName} · ${booking.date} ${booking.time}`,
+        at:now,
+        bookingId:booking.id,
+        type:'gig',
+        status:'pending'
+      });
+      GS.saveWorker(selectedWorker);
+
+      showRequestMsg('✓ Your booking request has been sent to the worker.', true);
+      showToast('Request Sent', 'Your request is now visible to the worker.');
+      renderBookingHistory();
+
+      sendRequest.disabled = true;
+      sendRequest.textContent = 'Request Sent ✓';
+      setTimeout(() => { sendRequest.disabled = false; sendRequest.textContent = 'Send Booking Request'; }, 1800);
+    }
+
+    function showRequestMsg(text, ok) {
+      const el = document.getElementById('requestMsg');
+      el.textContent = text;
+      el.className = `rounded-xl px-4 py-3 text-sm ${ok ? 'bg-green-400/10 text-green-300' : 'bg-red-400/10 text-red-300'}`;
+      el.classList.remove('hidden');
+    }
+
+    document.getElementById('changeWorker').onclick = () => {
+      pendingWorker = null;
+      document.getElementById('selectionModal').classList.add('hidden');
+      document.getElementById('selectionModal').classList.remove('flex');
+    };
+
+    document.getElementById('confirmWorker').onclick = () => {
+      if (!pendingWorker) return;
+      setSelectedWorker(pendingWorker);
+      document.getElementById('selectionModal').classList.add('hidden');
+      document.getElementById('selectionModal').classList.remove('flex');
+      showToast('Worker Selected', `${pendingWorker.name} is selected for your new request.`);
+      pendingWorker = null;
+    };
+
+    serviceSelect.onchange = () => {
+      const slug = canonicalServiceSlug(serviceSelect.value);
+
+      if (
+        selectedWorker &&
+        (!slug || !normalizeService(selectedWorker, slug))
+      ) {
+        selectedWorker = null;
+        pendingWorker = null;
+        selectedWorkerBox.innerHTML = `
+          <p class="text-gray-400">No worker selected yet.</p>
+          <p class="mt-1 text-xs text-gray-500">
+            Select a worker registered for this service.
+          </p>`;
+        selectedBadge.classList.add('hidden');
+      }
+
+      renderWorkers();
+    };
+    sendRequest.onclick = sendBooking;
+
+    function refresh(options = {}) {
+      updateLoginNotice();
+
+      // Do not rebuild the worker/form sections unnecessarily.
+      // Rebuilding these sections destroys focus and typed values.
+      if (options.workers) {
+        renderWorkers();
+      }
+
+      if (options.bookings) {
+        renderBookingHistory();
+      }
+    }
+
+    renderServiceOptions();
+    if (requestedWorkerId) {
+      const worker = GS.workers().find(w => String(w.id) === String(requestedWorkerId));
+      if (worker && worker.available !== false) setSelectedWorker(worker);
+    }
+
+    updateLoginNotice();
+    renderWorkers();
+    renderBookingHistory();
+
+    let lastBookingsSnapshot = JSON.stringify(GS.bookings());
+    let lastWorkersSnapshot = JSON.stringify(GS.workers());
+
+    setInterval(() => {
+      const newBookingsSnapshot = JSON.stringify(GS.bookings());
+      const newWorkersSnapshot = JSON.stringify(GS.workers());
+
+      // Only rebuild the booking history when the underlying booking data
+      // actually changes. This keeps the review textarea and star selection
+      // intact while the customer is typing.
+      if (newBookingsSnapshot !== lastBookingsSnapshot) {
+        lastBookingsSnapshot = newBookingsSnapshot;
+        renderBookingHistory();
+      }
+
+      // Worker cards may update when availability/profile data changes.
+      if (newWorkersSnapshot !== lastWorkersSnapshot) {
+        lastWorkersSnapshot = newWorkersSnapshot;
+        renderWorkers();
+      }
+
+      updateLoginNotice();
+    }, 1000);
+
+    window.addEventListener('storage', event => {
+      if (event.key === GS.keys.bookings) {
+        lastBookingsSnapshot = JSON.stringify(GS.bookings());
+        renderBookingHistory();
+      } else if (event.key === GS.keys.workers) {
+        lastWorkersSnapshot = JSON.stringify(GS.workers());
+        renderWorkers();
+        renderBookingHistory();
+      } else if (event.key === GS.keys.customer) {
+        updateLoginNotice();
+      }
+    });
+  </script>
+
+  <script src="./griahsathi-language.js"></script>
+  <script src="./griahsathi-ai.js"></script>
+</body>
+</html>
